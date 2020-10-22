@@ -10,5 +10,12 @@ package view;
  * @author Lucky Setiawan
  */
 public class MainMenuScreen {
+
+    public MainMenuScreen() {
+        showMainMenu();
+    }
     
+    private void showMainMenu(){
+        
+    }
 }
