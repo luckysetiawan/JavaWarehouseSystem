@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 12, 2020 at 07:48 AM
+-- Generation Time: Oct 28, 2020 at 02:17 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -31,12 +31,12 @@ SET time_zone = "+00:00";
 CREATE TABLE `item` (
   `item_id` int(6) NOT NULL,
   `uid` int(6) NOT NULL,
-  `item_name` varchar(15) DEFAULT NULL,
-  `item_quantity` int(5) DEFAULT NULL,
-  `item_size` int(5) DEFAULT NULL,
-  `item_weight` int(4) DEFAULT NULL,
-  `item_price` int(10) DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT 0
+  `item_name` varchar(15) NOT NULL,
+  `item_quantity` int(5) NOT NULL,
+  `item_size` int(5) NOT NULL,
+  `item_weight` int(4) NOT NULL,
+  `item_price` int(10) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -50,7 +50,7 @@ CREATE TABLE `request` (
   `dist_id` int(6) NOT NULL,
   `supp_id` int(6) NOT NULL,
   `item_id` int(6) NOT NULL,
-  `item_quantity` int(5) DEFAULT NULL,
+  `item_quantity` int(5) NOT NULL,
   `is_accepted` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -64,8 +64,8 @@ CREATE TABLE `takenitem` (
   `taken_id` int(6) NOT NULL,
   `item_id` int(6) NOT NULL,
   `uid` int(6) NOT NULL,
-  `item_quantity` int(5) DEFAULT NULL,
-  `date` date DEFAULT NULL
+  `item_quantity` int(5) NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -78,8 +78,8 @@ CREATE TABLE `user` (
   `uid` int(6) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(25) NOT NULL,
-  `email` varchar(20) DEFAULT NULL,
-  `address` varchar(30) DEFAULT NULL,
+  `email` varchar(20) NOT NULL,
+  `address` varchar(30) NOT NULL,
   `user_type` int(1) NOT NULL,
   `membership_status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
