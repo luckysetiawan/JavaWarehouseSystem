@@ -5,7 +5,7 @@
  */
 package main;
 
-import view.MainMenuScreen;
+import view.StartingScreen;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new MainMenuScreen();
+        new StartingScreen();
     }
     
 }
