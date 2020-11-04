@@ -5,6 +5,7 @@
  */
 package controller;
 
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,7 +60,7 @@ public class Controller {
       }
       return persons;
    }
-    
+  
    public static Person getPerson(String username){
       Person person = null;
       String query = "select * from person where username='" + username + "'";
