@@ -260,7 +260,7 @@ public class Controller {
             int itemQuantity = rs.getInt("item_quantity");
             boolean isAccepted = rs.getBoolean("is_accepted");
             
-            requests.add(new Request(reqId, suppId, itemId, itemQuantity, isAccepted));
+            requests.add(new Request(reqId, suppId, distId, itemId, itemQuantity, isAccepted));
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -285,7 +285,7 @@ public class Controller {
             int itemQuantity = rs.getInt("item_quantity");
             boolean isAccepted = rs.getBoolean("is_accepted");
             
-            request = new Request(reqId, suppId, dist_id, itemId, itemQuantity, isAccepted);
+            request = new Request(reqId, suppId, distId, itemId, itemQuantity, isAccepted);
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -338,26 +338,29 @@ public class Controller {
    
    //Incomplete Task
    public static ArrayList<TakenItem> getAllTakenItems(){
-      ArrayList<TakenItem> takenItems = new ArrayList<TakenItem>();
-      String query = "select * from takenitem";
-      conn.connect();
-      
-      try {
-         Statement stmt = conn.con.createStatement();
-         ResultSet rs = stmt.executeQuery(query);
-
-         while (rs.next()) {
-            int takenId = rs.getInt("taken_id");
-            int itemId = rs.getInt("item_id");
-            int uid = rs.getInt("uid");
-            int itemQuantity = rs.getInt("item_quantity");
-            Date date = rs.getDate("date");
-            
-            takenItems.add(new TakenItem(takenId, itemId, uid, itemQuantity, date.toString()));
-         }
-      } catch (Exception e) {
-      }
-      
+//      ArrayList<TakenItem> takenItems = new ArrayList<TakenItem>();
+//      String query = "select * from takenitem";
+//      conn.connect();
+//      
+//      try {
+//         Statement stmt = conn.con.createStatement();
+//         ResultSet rs = stmt.executeQuery(query);
+//
+//         while (rs.next()) {
+//            int takenId = rs.getInt("taken_id");
+//            int itemId = rs.getInt("item_id");
+//            int uid = rs.getInt("uid");
+//            int itemQuantity = rs.getInt("item_quantity");
+//            Date date = rs.getDate("date");
+//            
+//            takenItems.add(new TakenItem(takenId, itemId, uid, itemQuantity, date.toString()));
+//         }
+//      } catch (Exception e) {
+//         e.printStackTrace();
+//         
+//      }
+//      
+//      return takenItems;
    }
    
    //Incomplete Task
