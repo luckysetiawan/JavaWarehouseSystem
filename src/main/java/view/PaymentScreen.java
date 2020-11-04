@@ -10,63 +10,55 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 /**
  *
  * @author luckysetiawan
  */
-public class LoginScreen implements ActionListener {
+public class PaymentScreen implements ActionListener {
     private JFrame menu;
-    private JPanel panelUsername, panelPassword, panelButton;
-    private JLabel labelTitle, labelUsername, labelPassword;
-    private JTextField username;
-    private JPasswordField password;
-    private JButton btnLogin, btnBack;
-
-    public LoginScreen() {
-        showLoginScreen();
+    private JPanel panelPaymentMethod, panelButton;
+    private JLabel labelTitle, labelPaymentMethod;
+    private JComboBox paymentMethod;
+    private JButton btnPay, btnBack;
+    
+    public PaymentScreen() {
+        showPaymentScreen();
     }
     
-    private void showLoginScreen(){
-        menu = new JFrame("Warehouse Login");
+    private void showPaymentScreen(){
+        menu = new JFrame("Initiation Payment");
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
-        menu.setLayout(new GridLayout(4, 1));
+        menu.setLayout(new GridLayout(3, 1));
         
-        labelTitle = new JLabel("Login", SwingConstants.CENTER);
+        labelTitle = new JLabel("Payment", SwingConstants.CENTER);
         labelTitle.setFont(new Font("Georia", Font.BOLD, 20));
         menu.add(labelTitle);
         
-        panelUsername = new JPanel(new GridLayout(1,2));
-        labelPassword = new JLabel("Username: ");
-        username = new JTextField();
-        panelUsername.add(labelPassword);
-        panelUsername.add(username);
-        menu.add(panelUsername);
-        
-        panelPassword = new JPanel(new GridLayout(1,2));
-        labelPassword = new JLabel("Password: ");
-        password = new JPasswordField("");
-        panelPassword.add(labelPassword);
-        panelPassword.add(password);
-        menu.add(panelPassword);
+        String listPayment[] = {"M-Banking", "Transfer", "GoPay", "OVO", "Alfamart", "Indomart"};
+        panelPaymentMethod = new JPanel(new GridLayout(1,2));
+        labelPaymentMethod = new JLabel("Choose payment method : ");
+        paymentMethod = new JComboBox(listPayment);
+        panelPaymentMethod.add(labelPaymentMethod);
+        panelPaymentMethod.add(paymentMethod);
+        menu.add(panelPaymentMethod);
         
         panelButton = new JPanel(new GridLayout(1,2));
-        btnLogin = new JButton("Login");
-        btnLogin.setActionCommand("login");
-        btnLogin.addActionListener(this);
+        btnPay = new JButton("Pay");
+        btnPay.setActionCommand("pay");
+        btnPay.addActionListener(this);
         btnBack = new JButton("Back");
         btnBack.setActionCommand("back");
         btnBack.addActionListener(this);
         panelButton.add(btnBack);
-        panelButton.add(btnLogin);
+        panelButton.add(btnPay);
         menu.add(panelButton);
         
         menu.setVisible(true);
@@ -76,24 +68,23 @@ public class LoginScreen implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch (command) {
-            case "login":
+            case "pay":
                 // validate data
                 boolean validationResult = true;
                 if(validationResult){
                     menu.dispose();
-                   JOptionPane.showMessageDialog(null,"Login Successful!","Notification",JOptionPane.INFORMATION_MESSAGE);
-                   // new MainMenu();
+                   JOptionPane.showMessageDialog(null,"Register Successful!\n Please Login!","Notification",JOptionPane.INFORMATION_MESSAGE);
+                   new LoginScreen();
                 }else{
-                   JOptionPane.showMessageDialog(null,"Login Failed!","Alert",JOptionPane.WARNING_MESSAGE);
+                   JOptionPane.showMessageDialog(null,"Register Failed!","Alert",JOptionPane.WARNING_MESSAGE);
                 }
                 break;
             case "back":
                 menu.dispose();
-                new StartingScreen();
+                new RegisterScreen();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + command);
         }
     }
-    
 }
