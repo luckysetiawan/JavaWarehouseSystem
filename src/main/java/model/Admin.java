@@ -9,8 +9,22 @@ package model;
  *
  * @author ojan
  */
-public class Admin {
+public class Admin extends Person{
+  
+    //deklarasi
+    public Admin(int uid, String username, String password, String email, String address, boolean membership_status){
+        super(uid, username, password, email, address, membership_status);
+    }
     
-    public void removeMember();
-    public void acceptMember();
+    
+    //Getter Setter  
+    
+    //kerjaan
+    public void removeMember(int uid){
+        
+    }
+    public void acceptMember(int uid){
+        
+    }
+  
 }
