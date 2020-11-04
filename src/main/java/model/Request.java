@@ -12,13 +12,15 @@ package model;
 public class Request {
    private int reqId;
    private int suppId;
+   private int distId;
    private int itemId;
    private int itemQuantity;
    private boolean isAccepted;
 
-   public Request(int reqId, int suppId, int itemId, int itemQuantity, boolean isAccepted) {
+   public Request(int reqId, int suppId, int distId, int itemId, int itemQuantity, boolean isAccepted) {
       this.reqId = reqId;
       this.suppId = suppId;
+      this.distId = distId;
       this.itemId = itemId;
       this.itemQuantity = itemQuantity;
       this.isAccepted = isAccepted;
@@ -38,6 +40,14 @@ public class Request {
 
    public void setSuppId(int suppId) {
       this.suppId = suppId;
+   }
+
+   public int getDistId() {
+      return distId;
+   }
+
+   public void setDistId(int distId) {
+      this.distId = distId;
    }
 
    public int getItemId() {
