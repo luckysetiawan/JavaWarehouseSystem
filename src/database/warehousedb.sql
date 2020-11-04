@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2020 at 02:17 PM
+-- Generation Time: Nov 04, 2020 at 06:45 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -81,7 +81,7 @@ CREATE TABLE `user` (
   `email` varchar(20) NOT NULL,
   `address` varchar(30) NOT NULL,
   `user_type` int(1) NOT NULL,
-  `membership_status` tinyint(1) NOT NULL
+  `membership_status` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -116,7 +116,8 @@ ALTER TABLE `takenitem`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`uid`);
+  ADD PRIMARY KEY (`uid`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
