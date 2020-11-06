@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2020 at 07:07 AM
+-- Generation Time: Nov 06, 2020 at 06:59 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -49,7 +49,6 @@ CREATE TABLE `request` (
   `req_id` int(6) NOT NULL,
   `dist_id` int(6) NOT NULL,
   `supp_id` int(6) NOT NULL,
-  `item_id` int(6) NOT NULL,
   `item_quantity` int(5) NOT NULL,
   `is_accepted` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -62,9 +61,7 @@ CREATE TABLE `request` (
 
 CREATE TABLE `takenitem` (
   `taken_id` int(6) NOT NULL,
-  `item_id` int(6) NOT NULL,
   `uid` int(6) NOT NULL,
-  `item_quantity` int(5) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -99,18 +96,16 @@ ALTER TABLE `item`
 -- Indexes for table `request`
 --
 ALTER TABLE `request`
-  ADD PRIMARY KEY (`req_id`),
+  ADD PRIMARY KEY (`req_id`) USING BTREE,
   ADD KEY `dist_id` (`dist_id`),
-  ADD KEY `supp_id` (`supp_id`),
-  ADD KEY `item_id` (`item_id`);
+  ADD KEY `supp_id` (`supp_id`);
 
 --
 -- Indexes for table `takenitem`
 --
 ALTER TABLE `takenitem`
-  ADD PRIMARY KEY (`taken_id`),
-  ADD KEY `item_id` (`item_id`),
-  ADD KEY `uid` (`uid`);
+  ADD PRIMARY KEY (`taken_id`) USING BTREE,
+  ADD KEY `uid` (`uid`) USING BTREE;
 
 --
 -- Indexes for table `user`
@@ -136,12 +131,6 @@ ALTER TABLE `request`
   MODIFY `req_id` int(6) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `takenitem`
---
-ALTER TABLE `takenitem`
-  MODIFY `taken_id` int(6) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
@@ -162,15 +151,13 @@ ALTER TABLE `item`
 --
 ALTER TABLE `request`
   ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`dist_id`) REFERENCES `user` (`uid`),
-  ADD CONSTRAINT `request_ibfk_2` FOREIGN KEY (`supp_id`) REFERENCES `user` (`uid`),
-  ADD CONSTRAINT `request_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
+  ADD CONSTRAINT `request_ibfk_2` FOREIGN KEY (`supp_id`) REFERENCES `user` (`uid`);
 
 --
 -- Constraints for table `takenitem`
 --
 ALTER TABLE `takenitem`
-  ADD CONSTRAINT `takenitem_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`),
-  ADD CONSTRAINT `takenitem_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`);
+  ADD CONSTRAINT `takenitem_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
