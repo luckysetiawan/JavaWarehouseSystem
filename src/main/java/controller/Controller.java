@@ -145,9 +145,11 @@ public class Controller {
       }
    }
    
-   public static ArrayList<Item> getAllItems(){
+   public static ArrayList<Item> getAllItems(Person person){
       ArrayList<Item> items = new ArrayList<Item>();
       String query = "select item_id, item_name, item_quantity, item_size, item_weight, item_price, is_deleted from item";
+      //person = null untuk select semua
+      if(person instanceof Supplier) query += " where  uid=" + person.getUid();
       conn.connect();
       
       try {
@@ -162,13 +164,12 @@ public class Controller {
             int itemWeight = rs.getInt("item_weight");
             int itemPrice = rs.getInt("item_price");
             boolean isDeleted = rs.getBoolean("is_deleted");
-            
+
             items.add(new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
          }
       } catch (Exception e) {
          e.printStackTrace();
       }
-      
       return items;
    }
    
@@ -338,29 +339,29 @@ public class Controller {
    
    //Incomplete Task
    public static ArrayList<TakenItem> getAllTakenItems(){
-//      ArrayList<TakenItem> takenItems = new ArrayList<TakenItem>();
-//      String query = "select * from takenitem";
-//      conn.connect();
-//      
-//      try {
-//         Statement stmt = conn.con.createStatement();
-//         ResultSet rs = stmt.executeQuery(query);
-//
-//         while (rs.next()) {
-//            int takenId = rs.getInt("taken_id");
-//            int itemId = rs.getInt("item_id");
-//            int uid = rs.getInt("uid");
-//            int itemQuantity = rs.getInt("item_quantity");
-//            Date date = rs.getDate("date");
-//            
-//            takenItems.add(new TakenItem(takenId, itemId, uid, itemQuantity, date.toString()));
-//         }
-//      } catch (Exception e) {
-//         e.printStackTrace();
-//         
-//      }
-//      
-//      return takenItems;
+      ArrayList<TakenItem> takenItems = new ArrayList<>();
+      String query = "select * from takenitem where uid=" + person.getUid();
+      conn.connect();
+      
+      try {
+         ArrayList<Item> listItem = new ArrayList<>();
+         Statement stmt = conn.con.createStatement();
+         ResultSet rs = stmt.executeQuery(query);
+
+         while (rs.next()) {
+            int takenId = rs.getInt("taken_id");
+            listItem.add(getItem(rs.getInt("item_id")));
+            int itemQuantity = rs.getInt("item_quantity");
+            Date date = rs.getDate("date");
+            
+            takenItems.add(new TakenItem(takenId, itemId, uid, itemQuantity, date.toString()));
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+         
+      }
+      
+      return takenItems;
    }
    
    //Incomplete Task
