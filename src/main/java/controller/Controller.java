@@ -21,7 +21,7 @@ public class Controller {
    static DatabaseHandler conn = new DatabaseHandler();
 
    public static ArrayList<Person> getAllPersons(){
-      ArrayList<Person> persons = new ArrayList<Person>();
+      ArrayList<Person> persons = new ArrayList<>();
       String query = "select * from user";
       conn.connect();
 
@@ -146,7 +146,7 @@ public class Controller {
    }
    
    public static ArrayList<Item> getAllItems(Person person){
-      ArrayList<Item> items = new ArrayList<Item>();
+      ArrayList<Item> items = new ArrayList<>();
       String query = "select item_id, item_name, item_quantity, item_size, item_weight, item_price, is_deleted from item";
       //person = null untuk select semua
       if(person instanceof Supplier) query += " where  uid=" + person.getUid();
@@ -244,9 +244,18 @@ public class Controller {
       }
    }
    
-   public static ArrayList<Request> getAllRequests(){
-      ArrayList<Request> requests = new ArrayList<Request>();
-      String query = "select * from request";
+   public static ArrayList<Request> getAllRequest(Person person){
+      ArrayList<Request> requests = new ArrayList<>();
+      
+      //get request take
+      String query = "select a.*, c.item_id, c.item_name, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+              + "from request a "
+              + "join requesttake b on a.req_id = b.req_id "
+              + "join item c on b.item_id = c.item_id ";
+      
+      if(person instanceof Distributor) query += "where a.dist_id=" + person.getUid();
+      else if(person instanceof Supplier) query += "where a.supp_id=" + person.getUid();
+      
       conn.connect();
       
       try {
@@ -254,14 +263,58 @@ public class Controller {
          ResultSet rs = stmt.executeQuery(query);
 
          while (rs.next()) {
-            int reqId = rs.getInt("req_id");
-            int distId = rs.getInt("dist_id");
-            int suppId = rs.getInt("supp_id");
-            int itemId = rs.getInt("item_id");
-            int itemQuantity = rs.getInt("item_quantity");
+            int reqId = rs.getInt("a.req_id");
+            int suppId = rs.getInt("a.supp_id");
+            int distId = rs.getInt("a.dist_id");
             boolean isAccepted = rs.getBoolean("is_accepted");
+            int reqType = rs.getInt("a.req_type");
+            int itemId = rs.getInt("c.item_id");
+            String itemName = rs.getString("c.item_name");
+            int itemQuantity = rs.getInt("a.item_quantity");
+            int itemSize = rs.getInt("c.item_size");
+            int itemWeight = rs.getInt("c.item_weight");
+            int itemPrice = rs.getInt("c.item_price");
+            boolean isDeleted = rs.getBoolean("c.is_deleted");
+            Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
             
-            requests.add(new Request(reqId, suppId, distId, itemId, itemQuantity, isAccepted));
+            requests.add(new Request(reqId, suppId, distId, item, isAccepted, reqType));
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+      
+      //get request return
+      query = "select a.*, d.item_id, d.item_name, d.item_size, d.item_weight, d.item_price, d.is_deleted "
+              + "from request a "
+              + "join requestreturn b on a.req_id = b.req_id "
+              + "join takenitemdetail c on b.taken_id = c.taken_id and b.item_id = c.item_id "
+              + "join item d on c.item_id = d.item_id ";
+      
+      if(person instanceof Distributor) query += "where a.dist_id=" + person.getUid();
+      else if(person instanceof Supplier) query += "where a.supp_id=" + person.getUid();
+      
+      conn.connect();
+      
+      try {
+         Statement stmt = conn.con.createStatement();
+         ResultSet rs = stmt.executeQuery(query);
+
+         while (rs.next()) {
+            int reqId = rs.getInt("a.req_id");
+            int suppId = rs.getInt("a.supp_id");
+            int distId = rs.getInt("a.dist_id");
+            boolean isAccepted = rs.getBoolean("is_accepted");
+            int reqType = rs.getInt("a.req_type");
+            int itemId = rs.getInt("c.item_id");
+            String itemName = rs.getString("c.item_name");
+            int itemQuantity = rs.getInt("a.item_quantity");
+            int itemSize = rs.getInt("c.item_size");
+            int itemWeight = rs.getInt("c.item_weight");
+            int itemPrice = rs.getInt("c.item_price");
+            boolean isDeleted = rs.getBoolean("c.is_deleted");
+            Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+            
+            requests.add(new Request(reqId, suppId, distId, item, isAccepted, reqType));
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -272,7 +325,7 @@ public class Controller {
    
    public static Request getRequest(int reqId){
       Request request = null;
-      String query = "select * from request where req_id=" + reqId;
+      String query = "select * from request where a.req_id=" + reqId;
       conn.connect();
       
       try {
@@ -282,46 +335,95 @@ public class Controller {
          while (rs.next()) {
             int suppId = rs.getInt("supp_id");
             int distId = rs.getInt("dist_id");
-            int itemId = rs.getInt("item_id");
             int itemQuantity = rs.getInt("item_quantity");
             boolean isAccepted = rs.getBoolean("is_accepted");
+            int reqType = rs.getInt("req_type");
+            int itemId = 0;
             
-            request = new Request(reqId, suppId, distId, itemId, itemQuantity, isAccepted);
+            //request take
+            if(rs.getInt("taken_id") == 0) itemId = rs.getInt("item_take_id");
+            //request return
+            else itemId = rs.getInt("item_return_id");
+            
+            query = "select item_name, item_size, item_weight, item_price, is_deleted "
+               + "from item "
+               + "where item_id=" + itemId;
+            
+            try {
+               Statement stmt1 = conn.con.createStatement();
+               rs = stmt1.executeQuery(query);
+
+               while (rs.next()) {
+                  String itemName = rs.getString("item_name");
+                  int itemSize = rs.getInt("item_size");
+                  int itemWeight = rs.getInt("item_weight");
+                  int itemPrice = rs.getInt("item_price");
+                  boolean isDeleted = rs.getBoolean("is_deleted");
+                  Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+
+                  request = new Request(reqId, suppId, distId, item, isAccepted, reqType);
+               }
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
          }
       } catch (Exception e) {
          e.printStackTrace();
+         
       }
-      
       return request;
    }
    
-   public static boolean insertRequest(int dist_id, int supp_id, int item_id, int item_quantity){
-      String query = "insert into item (dist_id, supp_id, item_id, item_quantity) "
-         + "values (?, ?, ?, ?)";
+   public static boolean insertRequest(int dist_id, int supp_id, int item_id, int item_quantity, int req_type, int taken_id){
+      String query;
       conn.connect();
-      
-      try {
-         PreparedStatement stmt = conn.con.prepareStatement(query);
-         stmt.setInt(1, dist_id);
-         stmt.setInt(2, supp_id);
-         stmt.setInt(3, item_id);
-         stmt.setInt(4, item_quantity);
-         stmt.executeUpdate();
-         
-         return true;
-      } catch (Exception e) {
-         e.printStackTrace();
-         
-         return false;
+      if(req_type == 0){
+         query = "insert into item (dist_id, supp_id, item_quantity, req_type, item_take_id) "
+         + "values (?, ?, ?, ?, ?)";
+
+         try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, dist_id);
+            stmt.setInt(2, supp_id);
+            stmt.setInt(3, item_quantity);
+            stmt.setInt(4, req_type);
+            stmt.setInt(5, item_id);
+            stmt.executeUpdate();
+            
+            return true;
+         } catch (Exception e) {
+            e.printStackTrace();
+
+         }
+      }else if(req_type == 1){
+         query = "insert into item (dist_id, supp_id, item_quantity, req_type, taken_id, item_return_id) "
+         + "values (?, ?, ?, ?, ?, ?)";
+         try {
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, dist_id);
+            stmt.setInt(2, supp_id);
+            stmt.setInt(3, item_quantity);
+            stmt.setInt(4, req_type);
+            stmt.setInt(5, taken_id);
+            stmt.setInt(6, item_id);
+            stmt.executeUpdate();
+            
+            return true;
+         } catch (Exception e) {
+            e.printStackTrace();
+
+         }
       }
+      
+      return false;
    }
    
    public static boolean updateRequest(Request request){
       String query = "update request set dist_id='" + request.getDistId() + "', "
          + "supp_id=" + request.getSuppId() + ", "
-         + "item_id=" + request.getItemId() + ", "
-         + "item_quantity=" + request.getItemQuantity() + ", "
-         + "is_accepted=" + request.isIsAccepted() + " "
+         + "item_quantity=" + request.getItem().getItem_id() + ", "
+         + "is_accepted=" + request.isIsAccepted() + ","
+         + "req_type=" + request.getReqType() + " "
          + "where item_id=" + request.getReqId();
       conn.connect();
       
@@ -337,8 +439,7 @@ public class Controller {
       }
    }
    
-   //Incomplete Task
-   public static ArrayList<TakenItem> getAllTakenItems(){
+   public static ArrayList<TakenItem> getAllTakenItems(Person person){
       ArrayList<TakenItem> takenItems = new ArrayList<>();
       String query = "select * from takenitem where uid=" + person.getUid();
       conn.connect();
@@ -350,11 +451,34 @@ public class Controller {
 
          while (rs.next()) {
             int takenId = rs.getInt("taken_id");
-            listItem.add(getItem(rs.getInt("item_id")));
+            String query2 = "select c.item_id, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+                    + "from takenitemdetail a "
+                    + "join item c on a.item_id=c.item_quantity "
+                    + "where a.taken_id=" + takenId;
+            
+            try {
+               Statement stmt2 = conn.con.createStatement();
+               ResultSet rs2 = stmt2.executeQuery(query2);
+               
+               while (rs2.next()) {
+                  int itemId = rs2.getInt("c.item_id");
+                  String itemName = rs2.getString("c.item_name");
+                  int itemQuantity = rs2.getInt("a.item_quantity");
+                  int itemSize = rs2.getInt("c.item_size");
+                  int itemWeight = rs2.getInt("c.item_weight");
+                  int itemPrice = rs2.getInt("c.item_price");
+                  boolean isDeleted = rs2.getBoolean("c.is_deleted");
+                  Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+                  
+                  listItem.add(item);
+               }
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
             int itemQuantity = rs.getInt("item_quantity");
             Date date = rs.getDate("date");
             
-            takenItems.add(new TakenItem(takenId, itemId, uid, itemQuantity, date.toString()));
+            takenItems.add(new TakenItem(takenId, listItem, person.getUid(), itemQuantity, date.toString()));
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -364,19 +488,78 @@ public class Controller {
       return takenItems;
    }
    
-   //Incomplete Task
-   public static TakenItem getTakenItem(){
+   public static TakenItem getTakenItem(int takenId){
+      TakenItem takenItem = null;
+      String query = "select * from takenitem where taken_id=" + takenId;
+      conn.connect();
       
+      try {
+         ArrayList<Item> listItem = new ArrayList<>();
+         Statement stmt = conn.con.createStatement();
+         ResultSet rs = stmt.executeQuery(query);
+
+         while (rs.next()) {
+            String query2 = "select c.item_id, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+                    + "from takenitemdetail a "
+                    + "join item c on a.item_id=c.item_quantity "
+                    + "where a.taken_id=" + takenId;
+            
+            try {
+               Statement stmt2 = conn.con.createStatement();
+               ResultSet rs2 = stmt2.executeQuery(query2);
+               
+               while (rs2.next()) {
+                  int itemId = rs2.getInt("c.item_id");
+                  String itemName = rs2.getString("c.item_name");
+                  int itemQuantity = rs2.getInt("a.item_quantity");
+                  int itemSize = rs2.getInt("c.item_size");
+                  int itemWeight = rs2.getInt("c.item_weight");
+                  int itemPrice = rs2.getInt("c.item_price");
+                  boolean isDeleted = rs2.getBoolean("c.is_deleted");
+                  Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+                  
+                  listItem.add(item);
+               }
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+            int uid = rs.getInt("uid");
+            int itemQuantity = rs.getInt("item_quantity");
+            Date date = rs.getDate("date");
+            
+            takenItem = new TakenItem(takenId, listItem, uid, itemQuantity, date.toString());
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+         
+      }
+      
+      return takenItem;
    }
    
-   //Incomplete Task
-   public static boolean insertTakenItem(){
+   //Unfinished
+   public static boolean insertTakenItem(int uid, Date date, ArrayList<Item> listItems){
+      String query = "insert into takenitem (uid, date) values (?, ?)";
+      conn.connect();
       
-   }
-   
-   //Incomplete Task
-   public static boolean updateTakenItem(){
-      
+      try {
+         //insert takenitem
+         PreparedStatement stmt = conn.con.prepareStatement(query);
+         stmt.setInt(1, uid);
+         stmt.setDate(2, date);
+         stmt.executeUpdate();
+         
+         //insert takenitemdetail
+         for (int i = 0; i < listItems.size(); i++) {
+            
+         }
+         
+         return true;
+      } catch (Exception e) {
+         e.printStackTrace();
+         
+         return false;
+      }
    }
    
 }
