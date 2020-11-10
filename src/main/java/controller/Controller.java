@@ -439,7 +439,7 @@ public class Controller {
       }
    }
    
-   public static ArrayList<TakenItem> getAllTakenItems(Person person){
+   public static ArrayList<TakenItem> getAllTakenItems(Distributor person){
       ArrayList<TakenItem> takenItems = new ArrayList<>();
       String query = "select * from takenitem where uid=" + person.getUid();
       conn.connect();
