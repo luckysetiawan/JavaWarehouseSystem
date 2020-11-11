@@ -13,17 +13,17 @@ public class Request {
    private int reqId;
    private int suppId;
    private int distId;
-   private int itemId;
-   private int itemQuantity;
+   private Item item;
    private boolean isAccepted;
+   private int reqType;
 
-   public Request(int reqId, int suppId, int distId, int itemId, int itemQuantity, boolean isAccepted) {
+   public Request(int reqId, int suppId, int distId, Item item, boolean isAccepted, int reqType) {
       this.reqId = reqId;
       this.suppId = suppId;
       this.distId = distId;
-      this.itemId = itemId;
-      this.itemQuantity = itemQuantity;
+      this.item = item;
       this.isAccepted = isAccepted;
+      this.reqType = reqType;
    }
 
    public int getReqId() {
@@ -50,20 +50,12 @@ public class Request {
       this.distId = distId;
    }
 
-   public int getItemId() {
-      return itemId;
+   public Item getItem() {
+      return item;
    }
 
-   public void setItemId(int itemId) {
-      this.itemId = itemId;
-   }
-
-   public int getItemQuantity() {
-      return itemQuantity;
-   }
-
-   public void setItemQuantity(int itemQuantity) {
-      this.itemQuantity = itemQuantity;
+   public void setItem(Item item) {
+      this.item = item;
    }
 
    public boolean isIsAccepted() {
@@ -73,6 +65,13 @@ public class Request {
    public void setIsAccepted(boolean isAccepted) {
       this.isAccepted = isAccepted;
    }
-   
+
+   public int getReqType() {
+      return reqType;
+   }
+
+   public void setReqType(int reqType) {
+      this.reqType = reqType;
+   }
    
 }
