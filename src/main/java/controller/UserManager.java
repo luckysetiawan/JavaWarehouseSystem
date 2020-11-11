@@ -5,10 +5,32 @@
  */
 package controller;
 
+import model.Person;
+
 /**
  *
  * @author luckysetiawan
  */
 public class UserManager {
     // Singleton
+    private static UserManager instance;
+    private Person user;
+
+    private UserManager() {}
+
+    public static UserManager getInstance() {
+        if (instance == null) {
+            instance = new UserManager();
+        }
+        return instance;
+    }
+
+    public Person getUser() {
+        return user;
+    }
+
+    public void setUser(Person user) {
+        this.user = user;
+    }
+    
 }
