@@ -82,7 +82,7 @@ public class LoginScreen implements ActionListener {
                 if(validationResult){
                     menu.dispose();
                    JOptionPane.showMessageDialog(null,"Login Successful!","Notification",JOptionPane.INFORMATION_MESSAGE);
-                   // new MainMenu();
+                   new MainMenuScreen();
                 }else{
                    JOptionPane.showMessageDialog(null,"Login Failed!","Alert",JOptionPane.WARNING_MESSAGE);
                 }
