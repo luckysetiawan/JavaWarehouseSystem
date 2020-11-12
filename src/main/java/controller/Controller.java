@@ -451,34 +451,27 @@ public class Controller {
 
          while (rs.next()) {
             int takenId = rs.getInt("taken_id");
-            String query2 = "select c.item_id, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
-                    + "from takenitemdetail a "
-                    + "join item c on a.item_id=c.item_quantity "
-                    + "where a.taken_id=" + takenId;
-            
-            try {
-               Statement stmt2 = conn.con.createStatement();
-               ResultSet rs2 = stmt2.executeQuery(query2);
-               
-               while (rs2.next()) {
-                  int itemId = rs2.getInt("c.item_id");
-                  String itemName = rs2.getString("c.item_name");
-                  int itemQuantity = rs2.getInt("a.item_quantity");
-                  int itemSize = rs2.getInt("c.item_size");
-                  int itemWeight = rs2.getInt("c.item_weight");
-                  int itemPrice = rs2.getInt("c.item_price");
-                  boolean isDeleted = rs2.getBoolean("c.is_deleted");
-                  Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
-                  
-                  listItem.add(item);
-               }
-            } catch (Exception e) {
-               e.printStackTrace();
-            }
-            int itemQuantity = rs.getInt("item_quantity");
             Date date = rs.getDate("date");
+            query = "select c.item_id, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+                  + "from takenitemdetail a "
+                  + "join item c on a.item_id=c.item_quantity "
+                  + "where a.taken_id=" + takenId;
+            ResultSet rs2 = stmt.executeQuery(query);
+
+            while (rs2.next()) {
+               int itemId = rs2.getInt("c.item_id");
+               String itemName = rs2.getString("c.item_name");
+               int itemQuantity = rs2.getInt("a.item_quantity");
+               int itemSize = rs2.getInt("c.item_size");
+               int itemWeight = rs2.getInt("c.item_weight");
+               int itemPrice = rs2.getInt("c.item_price");
+               boolean isDeleted = rs2.getBoolean("c.is_deleted");
+               Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+
+               listItem.add(item);
+            }
             
-            takenItems.add(new TakenItem(takenId, listItem, person.getUid(), itemQuantity, date.toString()));
+            takenItems.add(new TakenItem(takenId, listItem, person.getUid(), date.toString()));
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -490,7 +483,11 @@ public class Controller {
    
    public static TakenItem getTakenItem(int takenId){
       TakenItem takenItem = null;
-      String query = "select * from takenitem where taken_id=" + takenId;
+      String query = "select a.uid, a.date, c.item_id, c.item_name, b.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+              + "from takenitem a"
+              + "left join takenitemdetail b on a.taken_id=b.taken_id "
+              + "join item c on b.item_id=c.item_id "
+              + "where taken_id=" + takenId;
       conn.connect();
       
       try {
@@ -498,36 +495,22 @@ public class Controller {
          Statement stmt = conn.con.createStatement();
          ResultSet rs = stmt.executeQuery(query);
 
-         while (rs.next()) {
-            String query2 = "select c.item_id, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
-                    + "from takenitemdetail a "
-                    + "join item c on a.item_id=c.item_quantity "
-                    + "where a.taken_id=" + takenId;
-            
-            try {
-               Statement stmt2 = conn.con.createStatement();
-               ResultSet rs2 = stmt2.executeQuery(query2);
-               
-               while (rs2.next()) {
-                  int itemId = rs2.getInt("c.item_id");
-                  String itemName = rs2.getString("c.item_name");
-                  int itemQuantity = rs2.getInt("a.item_quantity");
-                  int itemSize = rs2.getInt("c.item_size");
-                  int itemWeight = rs2.getInt("c.item_weight");
-                  int itemPrice = rs2.getInt("c.item_price");
-                  boolean isDeleted = rs2.getBoolean("c.is_deleted");
-                  Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
-                  
-                  listItem.add(item);
-               }
-            } catch (Exception e) {
-               e.printStackTrace();
-            }
-            int uid = rs.getInt("uid");
-            int itemQuantity = rs.getInt("item_quantity");
-            Date date = rs.getDate("date");
-            
-            takenItem = new TakenItem(takenId, listItem, uid, itemQuantity, date.toString());
+         if(rs.next()){
+            int uid = rs.getInt("a.uid");
+            Date date = rs.getDate("a.date");
+            do {
+               int itemId = rs.getInt("c.item_id");
+               String itemName = rs.getString("c.item_name");
+               int itemQuantity = rs.getInt("b.item_quantity");
+               int itemSize = rs.getInt("c.item_size");
+               int itemWeight = rs.getInt("c.item_weight");
+               int itemPrice = rs.getInt("c.item_price");
+               boolean isDeleted = rs.getBoolean("c.is_deleted");
+               Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+
+               listItem.add(item);
+            } while (rs.next());
+            takenItem = new TakenItem(takenId, listItem, uid, date.toString());
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -537,7 +520,6 @@ public class Controller {
       return takenItem;
    }
    
-   //Unfinished
    public static boolean insertTakenItem(int uid, Date date, ArrayList<Item> listItems){
       String query = "insert into takenitem (uid, date) values (?, ?)";
       conn.connect();
@@ -549,9 +531,22 @@ public class Controller {
          stmt.setDate(2, date);
          stmt.executeUpdate();
          
-         //insert takenitemdetail
-         for (int i = 0; i < listItems.size(); i++) {
+         //get pk
+         query = "select max(taken_id) as 'id' from takenitem";
+         Statement stmt1 = conn.con.createStatement();
+         ResultSet rs = stmt1.executeQuery(query);
+         
+         while (rs.next()) {
+            int takenId = rs.getInt("id");
+         
+            //insert takenitemdetail
+            query = "insert into takenitemdetail values ";
+            for (int i = 0, j = listItems.size(); i < j; i++) {
+               query += "(" + takenId + ", " + listItems.get(i).getItem_id() + ", " + listItems.get(i).getItem_quantity() + ")";
+               if(i != j - 1) query += ", ";
+            }
             
+            stmt1.executeUpdate(query);
          }
          
          return true;
