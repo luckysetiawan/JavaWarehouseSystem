@@ -88,14 +88,14 @@ public class MainMenuScreen implements ActionListener {
         
         menu.add(labelTitle);
         
-        if(true){ // admin
+        if(false){ // admin
             menu.setLayout(new GridLayout(2, 1));
             panelButton1 = new JPanel(new GridLayout(1,3));
             panelButton1.add(btnMembership);
             panelButton1.add(btnReadList);
             panelButton1.add(btnLogout);
             menu.add(panelButton1);
-        }else if(true){ // supplier
+        }else if(false){ // supplier
             menu.setLayout(new GridLayout(3, 1));
             panelButton1 = new JPanel(new GridLayout(1,3));
             panelButton2 = new JPanel(new GridLayout(1,3));

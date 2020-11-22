@@ -51,7 +51,7 @@ public class ListItemScreen implements ActionListener {
         switch (command) {
             case "back":
                 menu.dispose();
-                new MembershipScreen();
+                new MainMenuScreen();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + command);
