@@ -12,47 +12,35 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
  *
  * @author luckysetiawan
  */
-public class MembershipScreen implements ActionListener {
+public class TakeItemScreen implements ActionListener {
     private JFrame menu;
     private JLabel labelTitle;
-    private JPanel panelButton;
-    private JButton btnAccept, btnRevoke, btnBack;
+    private JButton btnBack;
 
-    public MembershipScreen() {
-        showMembership();
+    public TakeItemScreen() {
+        showTakeItem();
     }
     
-    private void showMembership(){
-        menu = new JFrame("Warehouse Membership");
+    private void showTakeItem(){
+        menu = new JFrame("Take Item");
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
-        menu.setLayout(new GridLayout(4, 1));
+        menu.setLayout(new GridLayout(2, 1));
         
-        labelTitle = new JLabel("Warehouse Membership", SwingConstants.CENTER);
+        labelTitle = new JLabel("Take Item", SwingConstants.CENTER);
         labelTitle.setFont(new Font("Georia", Font.BOLD, 20));
-        
-        btnAccept = new JButton("Accept Membership");
-        btnAccept.setActionCommand("accMem");
-        btnAccept.addActionListener(this);
-        
-        btnRevoke = new JButton("Revoke Membership");
-        btnRevoke.setActionCommand("revMem");
-        btnRevoke.addActionListener(this);
         
         btnBack = new JButton("Back");
         btnBack.setActionCommand("back");
         btnBack.addActionListener(this);
         
         menu.add(labelTitle);
-        menu.add(btnAccept);
-        menu.add(btnRevoke);
         menu.add(btnBack);
         menu.setVisible(true);
     }
@@ -61,14 +49,6 @@ public class MembershipScreen implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch (command) {
-            case "accMem":
-                menu.dispose();
-                new AcceptMembershipScreen();
-                break;
-            case "revMem":
-                menu.dispose();
-                new RevokeMembershipScreen();
-                break;
             case "back":
                 menu.dispose();
                 new MainMenuScreen();
@@ -76,6 +56,6 @@ public class MembershipScreen implements ActionListener {
             default:
                 throw new IllegalStateException("Unexpected value: " + command);
         }
-        
     }
+    
 }
