@@ -22,9 +22,11 @@ import javax.swing.SwingConstants;
  */
 public class MainMenuScreen implements ActionListener {
     private JFrame menu;
-    private JPanel panelButtonA, panelButtonB;
     private JLabel labelTitle;
-    private JButton btnMembership, btnReadList, btnLogout;
+    private JPanel panelButton1, panelButton2;
+    private JButton btnReadRequest, btnCreateRequest, btnTakeItem, btnReturnItem;
+    private JButton btnMembership, btnReadList, btnCreateItem, btnUpdateItem;
+    private JButton btnLogout;
 
     public MainMenuScreen() {
         showMainMenu();
@@ -34,31 +36,90 @@ public class MainMenuScreen implements ActionListener {
         menu = new JFrame("Warehouse Main Menu");
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
-        menu.setLayout(new GridLayout(2, 1));
         
         labelTitle = new JLabel("Main Menu", SwingConstants.CENTER);
         labelTitle.setFont(new Font("Georia", Font.BOLD, 20));
-        menu.add(labelTitle);
         
-        panelButtonA = new JPanel(new GridLayout(1,3));
+        if(true){// if admin
+            btnMembership = new JButton("Membership");
+            btnMembership.setActionCommand("membership");
+            btnMembership.addActionListener(this);
+        }
         
-        btnMembership = new JButton("Membership");
-        btnMembership.setActionCommand("membership");
-        btnMembership.addActionListener(this);
-        
+        // All user can read list item
         btnReadList = new JButton("Read List Item");
         btnReadList.setActionCommand("readList");
         btnReadList.addActionListener(this);
         
+        if(true){// if supplier
+            btnCreateItem = new JButton("Add Item");
+            btnCreateItem.setActionCommand("addItem");
+            btnCreateItem.addActionListener(this);
+            
+            btnUpdateItem = new JButton("Update Item");
+            btnUpdateItem.setActionCommand("updateItem");
+            btnUpdateItem.addActionListener(this);
+        }
+        
+        if(true){// if supplier and distributor
+            btnReadRequest = new JButton("View Requested Item");
+            btnReadRequest.setActionCommand("readRequest");
+            btnReadRequest.addActionListener(this);
+        }
+        
+        if(true){// if distributor
+            btnCreateRequest = new JButton("Request Item");
+            btnCreateRequest.setActionCommand("addRequest");
+            btnCreateRequest.addActionListener(this);
+            
+            btnTakeItem = new JButton("Take Item");
+            btnTakeItem.setActionCommand("takeItem");
+            btnTakeItem.addActionListener(this);
+            
+            btnReturnItem = new JButton("Return Item");
+            btnReturnItem.setActionCommand("returnItem");
+            btnReturnItem.addActionListener(this);
+        }
+        
+        // All User can logout
         btnLogout = new JButton("Logout");
         btnLogout.setActionCommand("logout");
         btnLogout.addActionListener(this);
         
-        panelButtonA.add(btnMembership);
-        panelButtonA.add(btnReadList);
-        panelButtonA.add(btnLogout);
+        menu.add(labelTitle);
         
-        menu.add(panelButtonA);
+        if(true){ // admin
+            menu.setLayout(new GridLayout(2, 1));
+            panelButton1 = new JPanel(new GridLayout(1,3));
+            panelButton1.add(btnMembership);
+            panelButton1.add(btnReadList);
+            panelButton1.add(btnLogout);
+            menu.add(panelButton1);
+        }else if(true){ // supplier
+            menu.setLayout(new GridLayout(3, 1));
+            panelButton1 = new JPanel(new GridLayout(1,3));
+            panelButton2 = new JPanel(new GridLayout(1,3));
+            panelButton1.add(btnReadList);
+            panelButton1.add(btnCreateItem);
+            panelButton1.add(btnUpdateItem);
+            panelButton2.add(btnReadRequest);
+            panelButton2.add(new JLabel(""));
+            panelButton2.add(btnLogout);
+            menu.add(panelButton1);
+            menu.add(panelButton2);
+        }else if(true) { // distributor
+            menu.setLayout(new GridLayout(3, 1));
+            panelButton1 = new JPanel(new GridLayout(1,6));
+            panelButton2 = new JPanel(new GridLayout(1,3));
+            panelButton1.add(btnReadList);
+            panelButton1.add(btnReadRequest);
+            panelButton1.add(btnCreateRequest);
+            panelButton2.add(btnTakeItem);
+            panelButton2.add(btnReturnItem);
+            panelButton2.add(btnLogout);
+            menu.add(panelButton1);
+            menu.add(panelButton2);
+        }
         
         menu.setVisible(true);
     }
@@ -67,6 +128,38 @@ public class MainMenuScreen implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch (command) {
+            case "membership":
+                menu.dispose();
+                new MembershipScreen();
+                break;
+            case "readList":
+                menu.dispose();
+                new ListItemScreen();
+                break;
+            case "addItem":
+                menu.dispose();
+                new StartingScreen();
+                break;
+            case "updateItem":
+                menu.dispose();
+                new StartingScreen();
+                break;
+            case "readRequest":
+                menu.dispose();
+                new StartingScreen();
+                break;
+            case "addRequest":
+                menu.dispose();
+                new StartingScreen();
+                break;
+            case "takeItem":
+                menu.dispose();
+                new StartingScreen();
+                break;
+            case "returnItem":
+                menu.dispose();
+                new StartingScreen();
+                break;
             case "logout":
                 // validate data
                 boolean validationResult = true;
@@ -77,14 +170,6 @@ public class MainMenuScreen implements ActionListener {
                 }else{
                    JOptionPane.showMessageDialog(null,"Logout Failed!","Alert",JOptionPane.WARNING_MESSAGE);
                 }
-                break;
-            case "membership":
-                menu.dispose();
-                // new MembershipScreen();
-                new StartingScreen();
-                break;
-            case "readList":
-                // new ReadListItemScreen();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + command);
