@@ -138,27 +138,27 @@ public class MainMenuScreen implements ActionListener {
                 break;
             case "addItem":
                 menu.dispose();
-                new StartingScreen();
+                new AddItemScreen();
                 break;
             case "updateItem":
                 menu.dispose();
-                new StartingScreen();
+                new UpdateItemScreen();
                 break;
             case "readRequest":
                 menu.dispose();
-                new StartingScreen();
+                new ReadRequestScreen();
                 break;
             case "addRequest":
                 menu.dispose();
-                new StartingScreen();
+                new AddRequestScreen();
                 break;
             case "takeItem":
                 menu.dispose();
-                new StartingScreen();
+                new TakeItemScreen();
                 break;
             case "returnItem":
                 menu.dispose();
-                new StartingScreen();
+                new ReturnItemScreen();
                 break;
             case "logout":
                 // validate data
