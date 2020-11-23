@@ -15,6 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import controller.UserManager;
+import model.Person;
+import model.Admin;
+import model.Distributor;
+import model.Supplier;
 
 /**
  *
@@ -40,7 +45,8 @@ public class MainMenuScreen implements ActionListener {
         labelTitle = new JLabel("Main Menu", SwingConstants.CENTER);
         labelTitle.setFont(new Font("Georia", Font.BOLD, 20));
         
-        if(true){// if admin
+        // if admin
+        if(UserManager.getInstance().getUser() instanceof Admin){
             btnMembership = new JButton("Membership");
             btnMembership.setActionCommand("membership");
             btnMembership.addActionListener(this);
@@ -51,7 +57,8 @@ public class MainMenuScreen implements ActionListener {
         btnReadList.setActionCommand("readList");
         btnReadList.addActionListener(this);
         
-        if(true){// if supplier
+        // if supplier
+        if(UserManager.getInstance().getUser() instanceof Supplier){
             btnCreateItem = new JButton("Add Item");
             btnCreateItem.setActionCommand("addItem");
             btnCreateItem.addActionListener(this);
@@ -61,13 +68,15 @@ public class MainMenuScreen implements ActionListener {
             btnUpdateItem.addActionListener(this);
         }
         
-        if(true){// if supplier and distributor
+        // if supplier and distributor
+        if(UserManager.getInstance().getUser() instanceof Supplier || UserManager.getInstance().getUser() instanceof Distributor){
             btnReadRequest = new JButton("View Requested Item");
             btnReadRequest.setActionCommand("readRequest");
             btnReadRequest.addActionListener(this);
         }
         
-        if(true){// if distributor
+        // if distributor
+        if(UserManager.getInstance().getUser() instanceof Distributor){
             btnCreateRequest = new JButton("Request Item");
             btnCreateRequest.setActionCommand("addRequest");
             btnCreateRequest.addActionListener(this);
@@ -88,14 +97,16 @@ public class MainMenuScreen implements ActionListener {
         
         menu.add(labelTitle);
         
-        if(false){ // admin
+        // admin
+        if(UserManager.getInstance().getUser() instanceof Admin){
             menu.setLayout(new GridLayout(2, 1));
             panelButton1 = new JPanel(new GridLayout(1,3));
             panelButton1.add(btnMembership);
             panelButton1.add(btnReadList);
             panelButton1.add(btnLogout);
             menu.add(panelButton1);
-        }else if(false){ // supplier
+        // supplier
+        }else if(UserManager.getInstance().getUser() instanceof Supplier){
             menu.setLayout(new GridLayout(3, 1));
             panelButton1 = new JPanel(new GridLayout(1,3));
             panelButton2 = new JPanel(new GridLayout(1,3));
@@ -107,7 +118,8 @@ public class MainMenuScreen implements ActionListener {
             panelButton2.add(btnLogout);
             menu.add(panelButton1);
             menu.add(panelButton2);
-        }else if(true) { // distributor
+        // distributor
+        }else if(UserManager.getInstance().getUser() instanceof Distributor) {
             menu.setLayout(new GridLayout(3, 1));
             panelButton1 = new JPanel(new GridLayout(1,6));
             panelButton2 = new JPanel(new GridLayout(1,3));
@@ -164,9 +176,9 @@ public class MainMenuScreen implements ActionListener {
                 // validate data
                 boolean validationResult = true;
                 if(validationResult){
+                    JOptionPane.showMessageDialog(null,"Logout Successful!","Notification",JOptionPane.INFORMATION_MESSAGE);
                     menu.dispose();
-                   JOptionPane.showMessageDialog(null,"Logout Successful!","Notification",JOptionPane.INFORMATION_MESSAGE);
-                   new StartingScreen();
+                    new StartingScreen();
                 }else{
                    JOptionPane.showMessageDialog(null,"Logout Failed!","Alert",JOptionPane.WARNING_MESSAGE);
                 }
