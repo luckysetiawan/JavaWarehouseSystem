@@ -148,7 +148,6 @@ public class Controller {
    public static ArrayList<Item> getAllItems(Person person){
       ArrayList<Item> items = new ArrayList<>();
       String query = "select item_id, item_name, item_quantity, item_size, item_weight, item_price, is_deleted from item";
-      //person = null untuk select semua
       if(person instanceof Supplier) query += " where  uid=" + person.getUid();
       conn.connect();
       
