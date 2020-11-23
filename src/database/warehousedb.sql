@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2020 at 08:07 PM
+-- Generation Time: Nov 23, 2020 at 06:05 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -39,6 +39,16 @@ CREATE TABLE `item` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `item`
+--
+
+INSERT INTO `item` (`item_id`, `uid`, `item_name`, `item_quantity`, `item_size`, `item_weight`, `item_price`, `is_deleted`) VALUES
+(1, 2, 'sabun', 3, 100, 50, 25000, 0),
+(2, 2, 'azareel', 3, 1500, 65000, 10, 0),
+(4, 1, 'colek', 10, 50, 100, 9000, 0),
+(5, 1, 'colek', 10, 50, 100, 9000, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -50,31 +60,21 @@ CREATE TABLE `request` (
   `dist_id` int(6) NOT NULL,
   `supp_id` int(6) NOT NULL,
   `item_quantity` int(5) NOT NULL,
-  `is_accepted` tinyint(1) DEFAULT NULL
+  `is_accepted` tinyint(1) DEFAULT NULL,
+  `req_type` int(1) NOT NULL,
+  `item_take_id` int(6) DEFAULT NULL,
+  `taken_id` int(6) DEFAULT NULL,
+  `item_return_id` int(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `requestreturn`
+-- Dumping data for table `request`
 --
 
-CREATE TABLE `requestreturn` (
-  `req_id` int(6) NOT NULL,
-  `taken_id` int(6) NOT NULL,
-  `item_id` int(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `requesttake`
---
-
-CREATE TABLE `requesttake` (
-  `req_id` int(6) NOT NULL,
-  `item_id` int(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `request` (`req_id`, `dist_id`, `supp_id`, `item_quantity`, `is_accepted`, `req_type`, `item_take_id`, `taken_id`, `item_return_id`) VALUES
+(1, 3, 2, 3, 1, 0, 1, NULL, NULL),
+(2, 3, 2, 2, 1, 1, NULL, 1, 2),
+(4, 3, 2, 3, NULL, 0, 4, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -88,6 +88,15 @@ CREATE TABLE `takenitem` (
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `takenitem`
+--
+
+INSERT INTO `takenitem` (`taken_id`, `uid`, `date`) VALUES
+(1, 3, '2020-11-09'),
+(2, 3, '3920-09-01'),
+(3, 3, '3920-09-01');
+
 -- --------------------------------------------------------
 
 --
@@ -99,6 +108,17 @@ CREATE TABLE `takenitemdetail` (
   `item_id` int(6) NOT NULL,
   `item_quantity` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `takenitemdetail`
+--
+
+INSERT INTO `takenitemdetail` (`taken_id`, `item_id`, `item_quantity`) VALUES
+(1, 2, 1),
+(2, 1, 3),
+(2, 2, 3),
+(3, 1, 3),
+(3, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -117,6 +137,16 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`uid`, `username`, `password`, `email`, `address`, `user_type`, `membership_status`) VALUES
+(1, 'julian', 'julian', 'julian@gmail.com', 'jalan julian', 0, 1),
+(2, 'azareel', 'ojan', 'ojan@gmail.com', 'jalan ojan', 1, 0),
+(3, 'lucky', 'lucky', 'lucky@gmail.com', 'jalan lucky', 2, 1),
+(5, 'ozan', 'lol', 'lol@gmail.com', 'lol', 2, NULL);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -133,23 +163,9 @@ ALTER TABLE `item`
 ALTER TABLE `request`
   ADD PRIMARY KEY (`req_id`) USING BTREE,
   ADD KEY `dist_id` (`dist_id`),
-  ADD KEY `supp_id` (`supp_id`);
-
---
--- Indexes for table `requestreturn`
---
-ALTER TABLE `requestreturn`
-  ADD PRIMARY KEY (`req_id`),
-  ADD KEY `req_id` (`req_id`),
-  ADD KEY `taken_id` (`taken_id`,`item_id`);
-
---
--- Indexes for table `requesttake`
---
-ALTER TABLE `requesttake`
-  ADD PRIMARY KEY (`req_id`),
-  ADD KEY `req_id` (`req_id`),
-  ADD KEY `item_id` (`item_id`);
+  ADD KEY `supp_id` (`supp_id`),
+  ADD KEY `item_take_id` (`item_take_id`),
+  ADD KEY `taken_id` (`taken_id`,`item_return_id`);
 
 --
 -- Indexes for table `takenitem`
@@ -181,19 +197,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `item_id` int(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `item_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `req_id` int(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `req_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `takenitem`
+--
+ALTER TABLE `takenitem`
+  MODIFY `taken_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `uid` int(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `uid` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -210,21 +232,9 @@ ALTER TABLE `item`
 --
 ALTER TABLE `request`
   ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`dist_id`) REFERENCES `user` (`uid`),
-  ADD CONSTRAINT `request_ibfk_2` FOREIGN KEY (`supp_id`) REFERENCES `user` (`uid`);
-
---
--- Constraints for table `requestreturn`
---
-ALTER TABLE `requestreturn`
-  ADD CONSTRAINT `requestreturn_ibfk_1` FOREIGN KEY (`req_id`) REFERENCES `request` (`req_id`),
-  ADD CONSTRAINT `requestreturn_ibfk_2` FOREIGN KEY (`taken_id`,`item_id`) REFERENCES `takenitemdetail` (`taken_id`, `item_id`);
-
---
--- Constraints for table `requesttake`
---
-ALTER TABLE `requesttake`
-  ADD CONSTRAINT `requesttake_ibfk_1` FOREIGN KEY (`req_id`) REFERENCES `request` (`req_id`),
-  ADD CONSTRAINT `requesttake_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
+  ADD CONSTRAINT `request_ibfk_2` FOREIGN KEY (`supp_id`) REFERENCES `user` (`uid`),
+  ADD CONSTRAINT `request_ibfk_3` FOREIGN KEY (`item_take_id`) REFERENCES `item` (`item_id`),
+  ADD CONSTRAINT `request_ibfk_4` FOREIGN KEY (`taken_id`,`item_return_id`) REFERENCES `takenitemdetail` (`taken_id`, `item_id`);
 
 --
 -- Constraints for table `takenitem`
