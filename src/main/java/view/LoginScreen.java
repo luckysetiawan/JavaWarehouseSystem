@@ -85,10 +85,13 @@ public class LoginScreen implements ActionListener {
                 if(!this.username.getText().isEmpty() && !this.password.getText().isEmpty()){
                     Person user = Controller.getPerson(this.username.getText());
                     if(user != null && this.password.getText().equals(user.getPassword())){
-                        validateData = true;
-                        //set user to user manager
-                        UserManager.getInstance().setUser(user);
-                    }else
+                        if(user.isMembership_status()){
+                            validateData = true;
+                            //set user to user manager
+                            UserManager.getInstance().setUser(user);
+                        }
+                    }
+                    if(!validateData)
                         JOptionPane.showMessageDialog(null,"Login Failed! Username or Password Doesn't Match!","Alert",JOptionPane.WARNING_MESSAGE);
                     
                 }else if(this.username.getText().isEmpty())
