@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import model.Person;
+import controller.Controller;
+import controller.UserManager;
 
 /**
  *
@@ -78,14 +81,27 @@ public class LoginScreen implements ActionListener {
         switch (command) {
             case "login":
                 // validate data
-                boolean validationResult = true;
-                if(validationResult){
+                boolean validateData = false;
+                if(!this.username.getText().isEmpty() && !this.password.getText().isEmpty()){
+                    Person user = Controller.getPerson(this.username.getText());
+                    if(user != null && this.password.getText().equals(user.getPassword())){
+                        validateData = true;
+                        //set user to user manager
+                        UserManager.getInstance().setUser(user);
+                    }else
+                        JOptionPane.showMessageDialog(null,"Login Failed! Username or Password Doesn't Match!","Alert",JOptionPane.WARNING_MESSAGE);
+                    
+                }else if(this.username.getText().isEmpty())
+                    JOptionPane.showMessageDialog(null,"Login Failed! Empty Username Detected!","Alert",JOptionPane.WARNING_MESSAGE);
+                else if(this.password.getText().isEmpty())
+                    JOptionPane.showMessageDialog(null,"Login Failed! Empty Password Detected!","Alert",JOptionPane.WARNING_MESSAGE);
+                
+                if(validateData){
+                    JOptionPane.showMessageDialog(null,"Login Success! Welcome To WAREHOUSE!","Notification",JOptionPane.INFORMATION_MESSAGE);
                     menu.dispose();
-                   JOptionPane.showMessageDialog(null,"Login Successful!","Notification",JOptionPane.INFORMATION_MESSAGE);
-                   new MainMenuScreen();
-                }else{
-                   JOptionPane.showMessageDialog(null,"Login Failed!","Alert",JOptionPane.WARNING_MESSAGE);
-                }
+                    new MainMenuScreen();
+                }else
+                    password.setText("");
                 break;
             case "back":
                 menu.dispose();
