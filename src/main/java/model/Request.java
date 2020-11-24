@@ -16,14 +16,16 @@ public class Request {
    private Item item;
    private RequestStatus isAccepted;
    private int reqType;
+   private int takenId;
 
-   public Request(int reqId, int suppId, int distId, Item item, RequestStatus isAccepted, int reqType) {
+   public Request(int reqId, int suppId, int distId, Item item, RequestStatus isAccepted, int reqType, int takenId) {
       this.reqId = reqId;
       this.suppId = suppId;
       this.distId = distId;
       this.item = item;
       this.isAccepted = isAccepted;
       this.reqType = reqType;
+      this.takenId = takenId;
    }
 
    public int getReqId() {
@@ -72,6 +74,14 @@ public class Request {
 
    public void setReqType(int reqType) {
       this.reqType = reqType;
+   }
+
+   public int getTakenId() {
+      return takenId;
+   }
+
+   public void setTakenId(int takenId) {
+      this.takenId = takenId;
    }
    
 }
