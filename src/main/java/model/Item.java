@@ -11,12 +11,14 @@ package model;
  */
 public class Item {
     private int item_id;
+    private int uid;
     private String item_name;
     private int item_quantity, item_size, item_weight, item_price;
     private boolean is_deleted;
 
-    public Item(int item_id, String item_name, int item_quantity, int item_size, int item_weight, int item_price, boolean is_deleted) {
+    public Item(int item_id, int uid, String item_name, int item_quantity, int item_size, int item_weight, int item_price, boolean is_deleted) {
         this.item_id = item_id;
+        this.uid = uid;
         this.item_name = item_name;
         this.item_quantity = item_quantity;
         this.item_size = item_size;
@@ -31,6 +33,14 @@ public class Item {
 
     public void setItem_id(int item_id) {
         this.item_id = item_id;
+    }
+    
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public String getItem_name() {

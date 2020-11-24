@@ -152,7 +152,7 @@ public class Controller {
    
    public static ArrayList<Item> getAllItems(Person person){
       ArrayList<Item> items = new ArrayList<>();
-      String query = "select item_id, item_name, item_quantity, item_size, item_weight, item_price, is_deleted from item";
+      String query = "select * from item";
       if(person instanceof Supplier) query += " where  uid=" + person.getUid();
       conn.connect();
       
@@ -162,6 +162,7 @@ public class Controller {
 
          while(rs.next()){
             int itemId = rs.getInt("item_id");
+            int uid = rs.getInt("uid");
             String itemName = rs.getString("item_name");
             int itemQuantity = rs.getInt("item_quantity");
             int itemSize = rs.getInt("item_size");
@@ -169,7 +170,7 @@ public class Controller {
             int itemPrice = rs.getInt("item_price");
             boolean isDeleted = rs.getBoolean("is_deleted");
 
-            items.add(new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
+            items.add(new Item(itemId, uid, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -179,7 +180,7 @@ public class Controller {
    
    public static Item getItem(int itemId){
       Item item = null;
-      String query = "select item_id, item_name, item_quantity, item_size, item_weight, item_price, is_deleted from item where item_id=" + itemId;
+      String query = "select * from item where item_id=" + itemId;
       conn.connect();
       
       try {
@@ -187,6 +188,7 @@ public class Controller {
          ResultSet rs = stmt.executeQuery(query);
 
          while (rs.next()) {
+            int uid = rs.getInt("uid");
             String itemName = rs.getString("item_name");
             int itemQuantity = rs.getInt("item_quantity");
             int itemSize = rs.getInt("item_size");
@@ -194,7 +196,7 @@ public class Controller {
             int itemPrice = rs.getInt("item_price");
             boolean isDeleted = rs.getBoolean("is_deleted");
             
-            item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+            item = new Item(itemId, uid, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
          }
       } catch (Exception e) {
          e.printStackTrace();
