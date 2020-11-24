@@ -99,14 +99,30 @@ public class RegisterScreen implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        switch (command) {
+        String strName = username.getText();
+        String strPassword = password.getText();
+        String strEmail = email.getText();
+        String straddress = address.getText();
+        int intType; 
+        String strType = String.valueOf(type.getSelectedItem());
+        if (strType.equals("Supplier")){
+            intType = 1;
+        }else{ //(strType.equals("Distributor"))
+            intType = 2;
+        }
+        boolean validationResult;
+        if(strName.isEmpty()||strPassword.isEmpty()||strEmail.isEmpty()||straddress.isEmpty()){
+            validationResult = false;
+        }else{
+            validationResult = true;
+        }
+        switch (command) {           
             case "register":
                 // validate data + payment
-                boolean validationResult = true;
                 if(validationResult){
-                    menu.dispose();
+                    menu.dispose();                    
                    JOptionPane.showMessageDialog(null,"Please immediately do the initiation payment to use your account!","Notification",JOptionPane.INFORMATION_MESSAGE);
-                   new PaymentScreen();
+                   new PaymentScreen(strName, strPassword, strEmail, straddress, intType);
                 }else{
                    JOptionPane.showMessageDialog(null,"Please fill all field correctly!","Alert",JOptionPane.WARNING_MESSAGE);
                 }
