@@ -94,12 +94,12 @@ public class AddRequestScreen implements ActionListener {
                         quantity = Integer.parseInt(this.quantity.getText());
                         
                         Item item = Controller.getItem(itemId);
-                        if(!(Controller.getPerson(suppId, "") instanceof Supplier) || item == null)
+                        if(!(Controller.getPerson(suppId, "") instanceof Supplier) || item == null){
                             validData = false;
                             JOptionPane.showMessageDialog(null,"Invalid Data!","Alert",JOptionPane.WARNING_MESSAGE);
-                        else if(quantity > item.getItem_quantity()){
-                            validData = false;
-                            JOptionPane.showMessageDialog(null,"Invalid Quantity!","Alert",JOptionPane.WARNING_MESSAGE);
+                        }else if(quantity > item.getItem_quantity()){
+                                validData = false;
+                                JOptionPane.showMessageDialog(null,"Invalid Quantity!","Alert",JOptionPane.WARNING_MESSAGE);
                         }
                     } catch (Exception ex) {
                         suppId = itemId = quantity = 0;
