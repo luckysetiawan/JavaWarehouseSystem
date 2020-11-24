@@ -83,7 +83,7 @@ public class LoginScreen implements ActionListener {
                 // validate data
                 boolean validateData = false;
                 if(!this.username.getText().isEmpty() && !this.password.getText().isEmpty()){
-                    Person user = Controller.getPerson(this.username.getText());
+                    Person user = Controller.getPerson(0, this.username.getText());
                     if(user != null && this.password.getText().equals(user.getPassword())){
                         if(user.isMembership_status()){
                             validateData = true;
