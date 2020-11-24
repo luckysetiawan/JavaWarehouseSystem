@@ -48,31 +48,31 @@ public class AddItemScreen implements ActionListener {
         
         panelName = new JPanel(new GridLayout(1, 2));
         labelName = new JLabel("Name : ");
-        textName = new JTextField(selectedItem.getItem_name());
+        textName = new JTextField();
         panelName.add(labelName);
         panelName.add(textName);
         
         panelQuantity = new JPanel(new GridLayout(1, 2));
         labelQuantity = new JLabel("Quantity : ");
-        textQuantity = new JTextField("" + selectedItem.getItem_quantity());
+        textQuantity = new JTextField();
         panelQuantity.add(labelQuantity);
         panelQuantity.add(textQuantity);
         
         panelSize = new JPanel(new GridLayout(1, 2));
         labelSize = new JLabel("Size : ");
-        textSize = new JTextField("" + selectedItem.getItem_size());
+        textSize = new JTextField();
         panelSize.add(labelSize);
         panelSize.add(textSize);
         
         panelWeight = new JPanel(new GridLayout(1, 2));
         labelWeight = new JLabel("Weight : ");
-        textWeight = new JTextField("" + selectedItem.getItem_weight());
+        textWeight = new JTextField();
         panelWeight.add(labelWeight);
         panelWeight.add(textWeight);
         
         panelPrice = new JPanel(new GridLayout(1, 2));
         labelPrice = new JLabel("Price : ");
-        textPrice = new JTextField("" + selectedItem.getItem_price());
+        textPrice = new JTextField();
         panelPrice.add(labelPrice);
         panelPrice.add(textPrice);
         
