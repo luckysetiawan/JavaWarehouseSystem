@@ -120,7 +120,11 @@ public class AddItemScreen implements ActionListener {
                     int priceNum = Integer.parseInt(textPrice.getText());
                     
                     Controller.insertItem(UserManager.getInstance().getUser().getUid(), name, quantityNum, sizeNum, weightNum, priceNum);
+                    JOptionPane.showMessageDialog(null,"Item succesfully added!","Notification",JOptionPane.INFORMATION_MESSAGE);
                 }
+                menu.dispose();
+                new MainMenuScreen();
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + command);
         }
