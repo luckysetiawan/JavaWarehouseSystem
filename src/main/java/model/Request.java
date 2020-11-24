@@ -14,10 +14,10 @@ public class Request {
    private int suppId;
    private int distId;
    private Item item;
-   private boolean isAccepted;
+   private RequestStatus isAccepted;
    private int reqType;
 
-   public Request(int reqId, int suppId, int distId, Item item, boolean isAccepted, int reqType) {
+   public Request(int reqId, int suppId, int distId, Item item, RequestStatus isAccepted, int reqType) {
       this.reqId = reqId;
       this.suppId = suppId;
       this.distId = distId;
@@ -58,11 +58,11 @@ public class Request {
       this.item = item;
    }
 
-   public boolean isIsAccepted() {
+   public RequestStatus isIsAccepted() {
       return isAccepted;
    }
 
-   public void setIsAccepted(boolean isAccepted) {
+   public void setIsAccepted(RequestStatus isAccepted) {
       this.isAccepted = isAccepted;
    }
 
