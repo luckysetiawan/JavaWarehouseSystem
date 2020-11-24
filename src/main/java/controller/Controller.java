@@ -152,7 +152,7 @@ public class Controller {
    
    public static ArrayList<Item> getAllItems(Person person){
       ArrayList<Item> items = new ArrayList<>();
-      String query = "select item_id, item_name, item_quantity, item_size, item_weight, item_price, is_deleted from item";
+      String query = "select * from item";
       if(person instanceof Supplier) query += " where  uid=" + person.getUid();
       conn.connect();
       
@@ -162,6 +162,7 @@ public class Controller {
 
          while(rs.next()){
             int itemId = rs.getInt("item_id");
+            int uid = rs.getInt("uid");
             String itemName = rs.getString("item_name");
             int itemQuantity = rs.getInt("item_quantity");
             int itemSize = rs.getInt("item_size");
@@ -169,7 +170,7 @@ public class Controller {
             int itemPrice = rs.getInt("item_price");
             boolean isDeleted = rs.getBoolean("is_deleted");
 
-            items.add(new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
+            items.add(new Item(itemId, uid, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -179,7 +180,7 @@ public class Controller {
    
    public static Item getItem(int itemId){
       Item item = null;
-      String query = "select item_id, item_name, item_quantity, item_size, item_weight, item_price, is_deleted from item where item_id=" + itemId;
+      String query = "select * from item where item_id=" + itemId;
       conn.connect();
       
       try {
@@ -187,6 +188,7 @@ public class Controller {
          ResultSet rs = stmt.executeQuery(query);
 
          while (rs.next()) {
+            int uid = rs.getInt("uid");
             String itemName = rs.getString("item_name");
             int itemQuantity = rs.getInt("item_quantity");
             int itemSize = rs.getInt("item_size");
@@ -194,7 +196,7 @@ public class Controller {
             int itemPrice = rs.getInt("item_price");
             boolean isDeleted = rs.getBoolean("is_deleted");
             
-            item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+            item = new Item(itemId, uid, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
          }
       } catch (Exception e) {
          e.printStackTrace();
@@ -250,7 +252,7 @@ public class Controller {
    
    public static ArrayList<Request> getAllRequest(Person person){
       ArrayList<Request> requests = new ArrayList<>();
-      String query = "select a.*, c.item_name, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+      String query = "select a.*, c.uid, c.item_name, c.item_size, c.item_weight, c.item_price, c.is_deleted "
               + "from request a "
               + "join item c on a.item_take_id = c.item_id or a.item_return_id = c.item_id ";
       
@@ -272,13 +274,14 @@ public class Controller {
             
             int itemId = rs.getInt("a.item_take_id");
             if(reqType == 1) itemId = rs.getInt("a.item_return_id");
+            int uid = rs.getInt("c.uid");
             String itemName = rs.getString("c.item_name");
             int itemQuantity = rs.getInt("a.item_quantity");
             int itemSize = rs.getInt("c.item_size");
             int itemWeight = rs.getInt("c.item_weight");
             int itemPrice = rs.getInt("c.item_price");
             boolean isDeleted = rs.getBoolean("c.is_deleted");
-            Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+            Item item = new Item(itemId, uid, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
             
             requests.add(new Request(reqId, suppId, distId, item, isAccepted, reqType));
          }
@@ -291,7 +294,7 @@ public class Controller {
    
    public static Request getRequest(int reqId){
       Request request = null;
-      String query = "select a.*, c.item_name, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+      String query = "select a.*, c.uid, c.item_name, c.item_size, c.item_weight, c.item_price, c.is_deleted "
               + "from request a "
               + "join item c on a.item_take_id = c.item_id or a.item_return_id = c.item_id "
               + "where a.req_id=" + reqId;
@@ -310,13 +313,14 @@ public class Controller {
             int itemId = rs.getInt("a.item_take_id");
             if(reqType == 1) itemId = rs.getInt("a.item_return_id");
             
+            int uid = rs.getInt("c.uid");
             String itemName = rs.getString("c.item_name");
             int itemQuantity = rs.getInt("a.item_quantity");
             int itemSize = rs.getInt("c.item_size");
             int itemWeight = rs.getInt("c.item_weight");
             int itemPrice = rs.getInt("c.item_price");
             boolean isDeleted = rs.getBoolean("c.is_deleted");
-            Item item = new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
+            Item item = new Item(itemId, uid, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted);
             
             request = new Request(reqId, suppId, distId, item, isAccepted, reqType);
          }
@@ -390,7 +394,7 @@ public class Controller {
       //get the items
       for(TakenItem takenItem : takenItems){
          ArrayList<Item> listItem = new ArrayList<>();
-         query = "select c.item_id, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+         query = "select c.item_id, c.uid, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
                + "from takenitemdetail a "
                + "join item c on a.item_id=c.item_id "
                + "where a.taken_id=" + takenItem.getTaken_id();
@@ -401,6 +405,7 @@ public class Controller {
 
             while (rs.next()) {
                int itemId = rs.getInt("c.item_id");
+               int uid = rs.getInt("c.uid");
                String itemName = rs.getString("c.item_name");
                int itemQuantity = rs.getInt("a.item_quantity");
                int itemSize = rs.getInt("c.item_size");
@@ -408,7 +413,7 @@ public class Controller {
                int itemPrice = rs.getInt("c.item_price");
                boolean isDeleted = rs.getBoolean("c.is_deleted");
                
-               listItem.add(new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
+               listItem.add(new Item(itemId, uid, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
             }
             
             takenItem.setListItem(listItem);
@@ -444,7 +449,7 @@ public class Controller {
       
       //get the items
       ArrayList<Item> listItem = new ArrayList<>();
-      query = "select c.item_id, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
+      query = "select c.item_id, c.uid, c.item_name, a.item_quantity, c.item_size, c.item_weight, c.item_price, c.is_deleted "
             + "from takenitemdetail a "
             + "join item c on a.item_id=c.item_id "
             + "where a.taken_id=" + takenId;
@@ -454,6 +459,7 @@ public class Controller {
 
          while (rs.next()) {
             int itemId = rs.getInt("c.item_id");
+            int uid = rs.getInt("c.uid");
             String itemName = rs.getString("c.item_name");
             int itemQuantity = rs.getInt("a.item_quantity");
             int itemSize = rs.getInt("c.item_size");
@@ -461,7 +467,7 @@ public class Controller {
             int itemPrice = rs.getInt("c.item_price");
             boolean isDeleted = rs.getBoolean("c.is_deleted");
 
-            listItem.add(new Item(itemId, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
+            listItem.add(new Item(itemId, uid, itemName, itemQuantity, itemSize, itemWeight, itemPrice, isDeleted));
          }
 
          takenItem.setListItem(listItem);

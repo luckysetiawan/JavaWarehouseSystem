@@ -46,16 +46,17 @@ public class ListItemScreen implements ActionListener {
         labelTitle = new JLabel("List Item", SwingConstants.CENTER);
         labelTitle.setFont(new Font("Georia", Font.BOLD, 20));
         
-        String column[] = {"ID", "Name", "Quantity", "Size", "Weight", "Price"};
+        String column[] = {"Item ID", "Supplier ID", "Name", "Quantity", "Size", "Weight", "Price"};
         String data[][] = new String[items.size()][column.length];
         for (int i = 0; i < items.size(); i++) {
             Item item = items.get(i);
             data[i][0] = "" + item.getItem_id();
-            data[i][1] = item.getItem_name();
-            data[i][2] = "" + item.getItem_quantity();
-            data[i][3] = "" + item.getItem_size() + " cm3";
-            data[i][4] = "" + item.getItem_weight() + " gr";
-            data[i][5] = "Rp " + item.getItem_price();
+            data[i][1] = "" + item.getUid();
+            data[i][2] = item.getItem_name();
+            data[i][3] = "" + item.getItem_quantity();
+            data[i][4] = "" + item.getItem_size() + " cm3";
+            data[i][5] = "" + item.getItem_weight() + " gr";
+            data[i][6] = "Rp " + item.getItem_price();
         }
         itemTable = new JTable(data, column);
         
