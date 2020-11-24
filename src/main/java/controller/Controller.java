@@ -262,7 +262,7 @@ public class Controller {
             int reqId = rs.getInt("a.req_id");
             int suppId = rs.getInt("a.supp_id");
             int distId = rs.getInt("a.dist_id");
-            boolean isAccepted = rs.getBoolean("a.is_accepted");
+            RequestStatus isAccepted = RequestStatus.values()[rs.getInt("a.is_accepted")];
             int reqType = rs.getInt("a.req_type");
             
             int itemId = rs.getInt("a.item_take_id");
@@ -299,7 +299,7 @@ public class Controller {
          while (rs.next()) {
             int suppId = rs.getInt("a.supp_id");
             int distId = rs.getInt("a.dist_id");
-            boolean isAccepted = rs.getBoolean("a.is_accepted");
+            RequestStatus isAccepted = RequestStatus.values()[rs.getInt("a.is_accepted")];
             int reqType = rs.getInt("a.req_type");
             
             int itemId = rs.getInt("a.item_take_id");
