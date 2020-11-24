@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.Controller;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -27,8 +28,18 @@ public class PaymentScreen implements ActionListener {
     private JLabel labelTitle, labelPaymentMethod;
     private JComboBox paymentMethod;
     private JButton btnPay, btnBack;
+    private String username;
+    private String password;
+    private String email;
+    private String address;
+    private int type;
     
-    public PaymentScreen() {
+    public PaymentScreen(String inputUserName, String inputPassword, String inputEmail, String inputAddress, int inputType) {
+        this.username = inputUserName;
+        this.password = inputPassword;
+        this.email = inputEmail;
+        this.address = inputAddress;
+        this.type = inputType;
         showPaymentScreen();
     }
     
@@ -72,6 +83,7 @@ public class PaymentScreen implements ActionListener {
                 // validate data
                 boolean validationResult = true;
                 if(validationResult){
+                    Controller.insertPerson(username, password, email, address, type);
                     menu.dispose();
                    JOptionPane.showMessageDialog(null,"Register Successful!\n Please Login!","Notification",JOptionPane.INFORMATION_MESSAGE);
                    new LoginScreen();
