@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2020 at 06:05 AM
+-- Generation Time: Nov 24, 2020 at 05:26 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -60,21 +60,22 @@ CREATE TABLE `request` (
   `dist_id` int(6) NOT NULL,
   `supp_id` int(6) NOT NULL,
   `item_quantity` int(5) NOT NULL,
-  `is_accepted` tinyint(1) DEFAULT NULL,
+  `is_accepted` int(1) NOT NULL DEFAULT 0,
   `req_type` int(1) NOT NULL,
   `item_take_id` int(6) DEFAULT NULL,
   `taken_id` int(6) DEFAULT NULL,
-  `item_return_id` int(6) DEFAULT NULL
+  `item_return_id` int(6) DEFAULT NULL,
+  `is_done` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `request`
 --
 
-INSERT INTO `request` (`req_id`, `dist_id`, `supp_id`, `item_quantity`, `is_accepted`, `req_type`, `item_take_id`, `taken_id`, `item_return_id`) VALUES
-(1, 3, 2, 3, 1, 0, 1, NULL, NULL),
-(2, 3, 2, 2, 1, 1, NULL, 1, 2),
-(4, 3, 2, 3, NULL, 0, 4, NULL, NULL);
+INSERT INTO `request` (`req_id`, `dist_id`, `supp_id`, `item_quantity`, `is_accepted`, `req_type`, `item_take_id`, `taken_id`, `item_return_id`, `is_done`) VALUES
+(1, 3, 2, 3, 1, 0, 1, NULL, NULL, 0),
+(2, 3, 2, 2, 1, 1, NULL, 1, 2, 0),
+(4, 3, 2, 3, 0, 0, 4, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
