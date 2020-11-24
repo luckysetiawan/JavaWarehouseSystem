@@ -61,9 +61,13 @@ public class Controller {
       return persons;
    }
   
-   public static Person getPerson(String username){
+   public static Person getPerson(int uid, String username){
       Person person = null;
-      String query = "select * from user where username='" + username + "'";
+      String query = "select * from user ";
+      if(uid == 0)
+          String query = "where uid='" + uid + "'";
+      else if(username.equals(""))
+          String query = "where username='" + username + "'";
       conn.connect();
        
       try {
@@ -71,7 +75,8 @@ public class Controller {
          ResultSet rs = stmt.executeQuery(query);
 
          while(rs.next()){
-            int uid = rs.getInt("uid");
+            uid = rs.getInt("uid");
+            username = rs.getString("username");
             String password = rs.getString("password");
             String email = rs.getString("email");
             String address = rs.getString("address");
