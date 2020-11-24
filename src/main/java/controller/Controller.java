@@ -259,6 +259,8 @@ public class Controller {
       if(person instanceof Distributor) query += "where a.dist_id=" + person.getUid();
       else if(person instanceof Supplier) query += "where a.supp_id=" + person.getUid();
       
+      query += " and a.is_done=false";
+      
       conn.connect();
       
       try {
@@ -297,7 +299,7 @@ public class Controller {
       String query = "select a.*, c.uid, c.item_name, c.item_size, c.item_weight, c.item_price, c.is_deleted "
               + "from request a "
               + "join item c on a.item_take_id = c.item_id or a.item_return_id = c.item_id "
-              + "where a.req_id=" + reqId;
+              + "where a.req_id=" + reqId + " and a.is_done=false";
       conn.connect();
       
       try {
@@ -356,6 +358,23 @@ public class Controller {
          + "item_quantity=" + request.getItem().getItem_id() + ", "
          + "is_accepted=" + request.isIsAccepted() + ","
          + "req_type=" + request.getReqType() + " "
+         + "where req_id=" + request.getReqId();
+      conn.connect();
+      
+      try {
+         Statement stmt = conn.con.createStatement();
+         stmt.executeUpdate(query);
+         
+         return true;
+      } catch (Exception e) {
+         e.printStackTrace();
+         
+         return false;
+      }
+   }
+   
+   public static boolean updateDoneRequestStatus(Request request){
+      String query = "update request set is_done=true "
          + "where req_id=" + request.getReqId();
       conn.connect();
       
