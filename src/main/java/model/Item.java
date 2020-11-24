@@ -90,5 +90,10 @@ public class Item {
     public void setIs_deleted(boolean is_deleted) {
         this.is_deleted = is_deleted;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" + "item_id=" + item_id + ", uid=" + uid + ", item_name=" + item_name + ", item_quantity=" + item_quantity + ", item_size=" + item_size + ", item_weight=" + item_weight + ", item_price=" + item_price + ", is_deleted=" + is_deleted + '}';
+    }
     
 }
