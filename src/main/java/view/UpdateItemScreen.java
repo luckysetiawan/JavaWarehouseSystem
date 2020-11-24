@@ -123,7 +123,11 @@ public class UpdateItemScreen implements ActionListener {
                     selectedItem.setItem_weight(weightNum);
                     selectedItem.setItem_price(priceNum);
                     Controller.updateItem(selectedItem);
+                    JOptionPane.showMessageDialog(null,"Item succesfully updated!","Notification",JOptionPane.INFORMATION_MESSAGE);
                 }
+                menu.dispose();
+                new MainMenuScreen();
+                break;
             case "back":
                 menu.dispose();
                 new MainMenuScreen();
