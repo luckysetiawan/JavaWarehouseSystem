@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2020 at 06:05 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.1
+-- Generation Time: Nov 24, 2020 at 04:25 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -60,7 +59,7 @@ CREATE TABLE `request` (
   `dist_id` int(6) NOT NULL,
   `supp_id` int(6) NOT NULL,
   `item_quantity` int(5) NOT NULL,
-  `is_accepted` tinyint(1) DEFAULT NULL,
+  `is_accepted` int(1) NOT NULL DEFAULT 0,
   `req_type` int(1) NOT NULL,
   `item_take_id` int(6) DEFAULT NULL,
   `taken_id` int(6) DEFAULT NULL,
@@ -74,7 +73,7 @@ CREATE TABLE `request` (
 INSERT INTO `request` (`req_id`, `dist_id`, `supp_id`, `item_quantity`, `is_accepted`, `req_type`, `item_take_id`, `taken_id`, `item_return_id`) VALUES
 (1, 3, 2, 3, 1, 0, 1, NULL, NULL),
 (2, 3, 2, 2, 1, 1, NULL, 1, 2),
-(4, 3, 2, 3, NULL, 0, 4, NULL, NULL);
+(4, 3, 2, 3, 0, 0, 4, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -133,7 +132,7 @@ CREATE TABLE `user` (
   `email` varchar(20) NOT NULL,
   `address` varchar(30) NOT NULL,
   `user_type` int(1) NOT NULL,
-  `membership_status` tinyint(1) DEFAULT NULL
+  `membership_status` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -144,7 +143,7 @@ INSERT INTO `user` (`uid`, `username`, `password`, `email`, `address`, `user_typ
 (1, 'julian', 'julian', 'julian@gmail.com', 'jalan julian', 0, 1),
 (2, 'azareel', 'ojan', 'ojan@gmail.com', 'jalan ojan', 1, 0),
 (3, 'lucky', 'lucky', 'lucky@gmail.com', 'jalan lucky', 2, 1),
-(5, 'ozan', 'lol', 'lol@gmail.com', 'lol', 2, NULL);
+(5, 'ozan', 'lol', 'lol@gmail.com', 'lol', 2, 0);
 
 --
 -- Indexes for dumped tables
