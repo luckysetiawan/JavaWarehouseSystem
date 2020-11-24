@@ -30,8 +30,7 @@ public class AddItemScreen implements ActionListener {
     private JLabel labelTitle ,labelName,labelQuantity,labelSize;
     private JLabel labelWeight, labelPrice;
     private JTextField textName, textQuantity, textSize, textWeight, textPrice;
-    private JButton btnBack,btnUpdate;
-    private Item selectedItem;
+    private JButton btnBack,btnSubmit;
     
     public AddItemScreen() {
         showAddItem();
@@ -80,11 +79,11 @@ public class AddItemScreen implements ActionListener {
         btnBack = new JButton("Back");
         btnBack.setActionCommand("back");
         btnBack.addActionListener(this);
-        btnUpdate = new JButton("Submit");
-        btnUpdate.setActionCommand("submit");
-        btnUpdate.addActionListener(this);
+        btnSubmit = new JButton("Submit");
+        btnSubmit.setActionCommand("submit");
+        btnSubmit.addActionListener(this);
         panelButton.add(btnBack);
-        panelButton.add(btnUpdate);
+        panelButton.add(btnSubmit);
         
         menu.add(labelTitle);
         menu.add(panelName);
