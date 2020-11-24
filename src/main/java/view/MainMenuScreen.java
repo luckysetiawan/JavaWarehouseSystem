@@ -150,7 +150,7 @@ public class MainMenuScreen implements ActionListener {
                 break;
             case "addItem":
                 menu.dispose();
-                //new AddItemScreen();
+                new AddItemScreen();
                 break;
             case "updateItem":
                 menu.dispose();
