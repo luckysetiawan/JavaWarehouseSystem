@@ -65,9 +65,9 @@ public class Controller {
       Person person = null;
       String query = "select * from user ";
       if(uid == 0)
-          String query = "where uid='" + uid + "'";
+          query += "where username='" + username + "'";
       else if(username.equals(""))
-          String query = "where username='" + username + "'";
+          query += "where uid='" + uid + "'";
       conn.connect();
        
       try {
