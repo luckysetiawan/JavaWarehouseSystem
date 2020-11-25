@@ -7,6 +7,8 @@ package view;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -29,6 +31,8 @@ public class AcceptMembershipScreen implements ActionListener {
     
     private void showAcceptMembership(){
         menu = new JFrame("Accept Membership");
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../iconWH.jpg"));
+        menu.setIconImage(icon);
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
         menu.setLayout(new GridLayout(2, 1));
