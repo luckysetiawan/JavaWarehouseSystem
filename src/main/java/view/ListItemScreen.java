@@ -71,20 +71,21 @@ public class ListItemScreen implements ActionListener {
         ListSelectionModel select= itemTable.getSelectionModel();  
             select.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  
             select.addListSelectionListener(new ListSelectionListener() {  
-              @Override
-              public void valueChanged(ListSelectionEvent e) {  
-                String Data = null;
-                int itemId = 0;
-                int[] row = itemTable.getSelectedRows();
-                
-                for (int i = 0; i < row.length; i++) { 
-                    Data = (String) itemTable.getValueAt(row[i], 0); 
-                    itemId = Integer.parseInt(Data);
-                }  
-                menu.dispose();
-                new UpdateItemScreen(itemId);
-              }       
-            });
+                @Override
+                public void valueChanged(ListSelectionEvent e) {  
+                    String Data = null;
+                    int itemId = 0;
+                    int[] row = itemTable.getSelectedRows();
+
+                    for (int i = 0; i < row.length; i++) { 
+                        Data = (String) itemTable.getValueAt(row[i], 0); 
+                        itemId = Integer.parseInt(Data);
+                    }
+                    
+                    menu.dispose();
+                    new UpdateItemScreen(itemId);
+                }       
+        });
         
         scrollPane = new JScrollPane(itemTable);
         

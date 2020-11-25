@@ -20,6 +20,9 @@ import controller.Controller;
 import controller.UserManager;
 import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import model.Request;
 import model.Supplier;
 import model.RequestStatus;
@@ -36,6 +39,7 @@ public class ReadRequestScreen implements ActionListener {
     private JTable requestTable;
     private JScrollPane scrollPane;
     private ArrayList<Request> requests;
+    private int selectedRequest;
 
     public ReadRequestScreen() {
         this.requests = Controller.getAllRequest(UserManager.getInstance().getUser());
@@ -64,7 +68,7 @@ public class ReadRequestScreen implements ActionListener {
                 data[i][0] = "Return";
             data[i][1] = "" + request.getSuppId();
             if(UserManager.getInstance().getUser() instanceof Supplier)
-                data[i][1] = "" + request.getDistId();
+            data[i][1] = "" + request.getDistId();
             data[i][2] = "" + request.getItem().getItem_id();
             data[i][3] = request.getItem().getItem_name();
             data[i][4] = "" + request.getItem().getItem_quantity();
@@ -76,6 +80,28 @@ public class ReadRequestScreen implements ActionListener {
 
         }
         requestTable = new JTable(data, column);
+        
+        requestTable.setCellSelectionEnabled(true);
+        ListSelectionModel select= requestTable.getSelectionModel();  
+            select.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  
+            select.addListSelectionListener(new ListSelectionListener() {  
+                @Override
+                public void valueChanged(ListSelectionEvent e) {  
+                    String Data = null;
+                    int itemId = 0;
+                    int[] row = requestTable.getSelectedRows();
+
+                    for (int i = 0; i < row.length; i++) { 
+                        Data = (String) requestTable.getValueAt(row[i], 0); 
+                        itemId = Integer.parseInt(Data);
+                    }
+                    
+                    menu.dispose();
+                    Request request = Controller.getRequest(itemId);
+                    Controller.updateDoneRequestStatus(request);
+                    new MainMenuScreen();
+                }       
+        });
         
         scrollPane = new JScrollPane(requestTable);
         
