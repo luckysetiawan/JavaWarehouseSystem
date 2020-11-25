@@ -98,8 +98,8 @@ public class AddRequestScreen implements ActionListener {
                             validData = false;
                             JOptionPane.showMessageDialog(null,"Invalid Data!","Alert",JOptionPane.WARNING_MESSAGE);
                         }else if(quantity > item.getItem_quantity()){
-                                validData = false;
-                                JOptionPane.showMessageDialog(null,"Invalid Quantity!","Alert",JOptionPane.WARNING_MESSAGE);
+                            validData = false;
+                            JOptionPane.showMessageDialog(null,"Invalid Quantity!","Alert",JOptionPane.WARNING_MESSAGE);
                         }
                     } catch (Exception ex) {
                         suppId = itemId = quantity = 0;

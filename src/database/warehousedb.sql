@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2020 at 04:25 PM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.11
+-- Generation Time: Nov 24, 2020 at 10:27 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,8 +45,8 @@ CREATE TABLE `item` (
 INSERT INTO `item` (`item_id`, `uid`, `item_name`, `item_quantity`, `item_size`, `item_weight`, `item_price`, `is_deleted`) VALUES
 (1, 2, 'sabun', 3, 100, 50, 25000, 0),
 (2, 2, 'azareel', 3, 1500, 65000, 10, 0),
-(4, 1, 'colek', 10, 50, 100, 9000, 0),
-(5, 1, 'colek', 10, 50, 100, 9000, 0);
+(4, 2, 'colek', 10, 50, 100, 9000, 0),
+(5, 2, 'colek', 7, 50, 100, 9000, 0);
 
 -- --------------------------------------------------------
 
@@ -63,17 +63,20 @@ CREATE TABLE `request` (
   `req_type` int(1) NOT NULL,
   `item_take_id` int(6) DEFAULT NULL,
   `taken_id` int(6) DEFAULT NULL,
-  `item_return_id` int(6) DEFAULT NULL
+  `item_return_id` int(6) DEFAULT NULL,
+  `is_done` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `request`
 --
 
-INSERT INTO `request` (`req_id`, `dist_id`, `supp_id`, `item_quantity`, `is_accepted`, `req_type`, `item_take_id`, `taken_id`, `item_return_id`) VALUES
-(1, 3, 2, 3, 1, 0, 1, NULL, NULL),
-(2, 3, 2, 2, 1, 1, NULL, 1, 2),
-(4, 3, 2, 3, 0, 0, 4, NULL, NULL);
+INSERT INTO `request` (`req_id`, `dist_id`, `supp_id`, `item_quantity`, `is_accepted`, `req_type`, `item_take_id`, `taken_id`, `item_return_id`, `is_done`) VALUES
+(1, 3, 2, 3, 1, 0, 1, NULL, NULL, 1),
+(2, 3, 2, 2, 1, 1, NULL, 1, 2, 1),
+(4, 3, 2, 3, 1, 0, 4, NULL, NULL, 1),
+(5, 3, 2, 2, 1, 0, 4, NULL, NULL, 1),
+(6, 3, 2, 3, 1, 0, 5, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -94,7 +97,20 @@ CREATE TABLE `takenitem` (
 INSERT INTO `takenitem` (`taken_id`, `uid`, `date`) VALUES
 (1, 3, '2020-11-09'),
 (2, 3, '3920-09-01'),
-(3, 3, '3920-09-01');
+(3, 3, '3920-09-01'),
+(4, 3, '2020-11-25'),
+(5, 3, '2020-11-25'),
+(6, 3, '2020-11-25'),
+(7, 3, '2020-11-25'),
+(8, 3, '2020-11-25'),
+(9, 3, '2020-11-25'),
+(10, 3, '2020-11-25'),
+(11, 3, '2020-11-25'),
+(12, 3, '2020-11-25'),
+(13, 3, '2020-11-25'),
+(14, 3, '2020-11-25'),
+(15, 3, '2020-11-25'),
+(16, 3, '2020-11-25');
 
 -- --------------------------------------------------------
 
@@ -105,19 +121,32 @@ INSERT INTO `takenitem` (`taken_id`, `uid`, `date`) VALUES
 CREATE TABLE `takenitemdetail` (
   `taken_id` int(6) NOT NULL,
   `item_id` int(6) NOT NULL,
-  `item_quantity` int(5) NOT NULL
+  `item_quantity` int(5) NOT NULL,
+  `return_quantity` int(5) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `takenitemdetail`
 --
 
-INSERT INTO `takenitemdetail` (`taken_id`, `item_id`, `item_quantity`) VALUES
-(1, 2, 1),
-(2, 1, 3),
-(2, 2, 3),
-(3, 1, 3),
-(3, 2, 3);
+INSERT INTO `takenitemdetail` (`taken_id`, `item_id`, `item_quantity`, `return_quantity`) VALUES
+(1, 2, 1, 2),
+(2, 1, 3, 0),
+(2, 2, 3, 0),
+(3, 1, 3, 0),
+(3, 2, 3, 0),
+(4, 1, 3, 0),
+(5, 1, 3, 0),
+(5, 4, 3, 0),
+(9, 1, 3, 0),
+(9, 4, 3, 0),
+(10, 1, 3, 0),
+(10, 4, 3, 0),
+(13, 4, 3, 0),
+(14, 1, 3, 0),
+(14, 4, 3, 0),
+(15, 4, 2, 0),
+(16, 5, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -202,13 +231,13 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `request`
 --
 ALTER TABLE `request`
-  MODIFY `req_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `req_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `takenitem`
 --
 ALTER TABLE `takenitem`
-  MODIFY `taken_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `taken_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `user`
