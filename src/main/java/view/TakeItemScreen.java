@@ -21,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import controller.Controller;
 import controller.UserManager;
+import java.awt.Image;
+import java.awt.Toolkit;
 import model.Request;
 import model.RequestStatus;
 import model.Supplier;
@@ -56,6 +58,8 @@ public class TakeItemScreen implements ActionListener {
     
     private void showTakeItem(){
         menu = new JFrame("Take Item");
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../iconWH.jpg"));
+        menu.setIconImage(icon);
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
         menu.setLayout(new GridLayout(2, 1));

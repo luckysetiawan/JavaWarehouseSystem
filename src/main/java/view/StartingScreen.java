@@ -7,8 +7,11 @@ package view;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,13 +31,16 @@ public class StartingScreen implements ActionListener {
     }
     
     private void showStartingMenu(){
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../iconWH.jpg"));
+        Image logo = icon.getScaledInstance(75, 75, Image.SCALE_DEFAULT);
+
         menu = new JFrame("Warehouse System");
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
         menu.setLayout(new GridLayout(4, 1));
+        menu.setIconImage(icon);
         
-        labelTitle = new JLabel("Java Warehouse System", SwingConstants.CENTER);
-        labelTitle.setFont(new Font("Georia", Font.BOLD, 20));
+        labelTitle = new JLabel(new ImageIcon(logo), SwingConstants.CENTER);
         menu.add(labelTitle);
         
         btnLogin = new JButton("Login");

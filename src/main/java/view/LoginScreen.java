@@ -20,6 +20,8 @@ import javax.swing.SwingConstants;
 import model.Person;
 import controller.Controller;
 import controller.UserManager;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 /**
  *
@@ -39,6 +41,8 @@ public class LoginScreen implements ActionListener {
     
     private void showLoginScreen(){
         menu = new JFrame("Warehouse Login");
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../iconWH.jpg"));
+        menu.setIconImage(icon);
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
         menu.setLayout(new GridLayout(4, 1));

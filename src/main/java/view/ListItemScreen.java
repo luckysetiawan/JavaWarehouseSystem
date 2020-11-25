@@ -18,6 +18,8 @@ import javax.swing.JScrollPane;
 import java.util.ArrayList;
 import controller.Controller;
 import controller.UserManager;
+import java.awt.Image;
+import java.awt.Toolkit;
 import model.Item;
 
 /**
@@ -39,6 +41,8 @@ public class ListItemScreen implements ActionListener {
     
     private void showListItem(){
         menu = new JFrame("List Item");
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../iconWH.jpg"));
+        menu.setIconImage(icon);
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
         menu.setLayout(new GridLayout(3, 1));

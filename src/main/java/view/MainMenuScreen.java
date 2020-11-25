@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import controller.UserManager;
+import java.awt.Image;
+import java.awt.Toolkit;
 import model.Person;
 import model.Admin;
 import model.Distributor;
@@ -39,6 +41,8 @@ public class MainMenuScreen implements ActionListener {
     
     private void showMainMenu(){
         menu = new JFrame("Warehouse Main Menu");
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("../iconWH.jpg"));
+        menu.setIconImage(icon);
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.setSize(512, 256);
         
