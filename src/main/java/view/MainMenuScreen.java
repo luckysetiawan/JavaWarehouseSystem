@@ -32,7 +32,7 @@ public class MainMenuScreen implements ActionListener {
     private JLabel labelTitle;
     private JPanel panelButton1, panelButton2;
     private JButton btnReadRequest, btnCreateRequest, btnTakeItem, btnReturnItem;
-    private JButton btnMembership, btnReadList, btnCreateItem, btnUpdateItem;
+    private JButton btnMembership, btnReadList, btnCreateItem;
     private JButton btnLogout;
 
     public MainMenuScreen() {
@@ -66,10 +66,6 @@ public class MainMenuScreen implements ActionListener {
             btnCreateItem = new JButton("Add Item");
             btnCreateItem.setActionCommand("addItem");
             btnCreateItem.addActionListener(this);
-            
-            btnUpdateItem = new JButton("Update Item");
-            btnUpdateItem.setActionCommand("updateItem");
-            btnUpdateItem.addActionListener(this);
         }
         
         // if supplier and distributor
@@ -116,7 +112,6 @@ public class MainMenuScreen implements ActionListener {
             panelButton2 = new JPanel(new GridLayout(1,3));
             panelButton1.add(btnReadList);
             panelButton1.add(btnCreateItem);
-            panelButton1.add(btnUpdateItem);
             panelButton2.add(btnReadRequest);
             panelButton2.add(new JLabel(""));
             panelButton2.add(btnLogout);
@@ -155,10 +150,6 @@ public class MainMenuScreen implements ActionListener {
             case "addItem":
                 menu.dispose();
                 new AddItemScreen();
-                break;
-            case "updateItem":
-                menu.dispose();
-                new UpdateItemScreen(1);
                 break;
             case "readRequest":
                 menu.dispose();

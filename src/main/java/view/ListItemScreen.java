@@ -20,6 +20,9 @@ import controller.Controller;
 import controller.UserManager;
 import java.awt.Image;
 import java.awt.Toolkit;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import model.Item;
 
 /**
@@ -63,6 +66,25 @@ public class ListItemScreen implements ActionListener {
             data[i][6] = "Rp " + item.getItem_price();
         }
         itemTable = new JTable(data, column);
+        
+        itemTable.setCellSelectionEnabled(true);
+        ListSelectionModel select= itemTable.getSelectionModel();  
+            select.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  
+            select.addListSelectionListener(new ListSelectionListener() {  
+              @Override
+              public void valueChanged(ListSelectionEvent e) {  
+                String Data = null;
+                int itemId = 0;
+                int[] row = itemTable.getSelectedRows();
+                
+                for (int i = 0; i < row.length; i++) { 
+                    Data = (String) itemTable.getValueAt(row[i], 0); 
+                    itemId = Integer.parseInt(Data);
+                }  
+                menu.dispose();
+                new UpdateItemScreen(itemId);
+              }       
+            });
         
         scrollPane = new JScrollPane(itemTable);
         
