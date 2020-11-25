@@ -1,5 +1,5 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
@@ -8,7 +8,6 @@
 -- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -162,7 +161,7 @@ CREATE TABLE `user` (
   `email` varchar(20) NOT NULL,
   `address` varchar(30) NOT NULL,
   `user_type` int(1) NOT NULL,
-  `membership_status` tinyint(1) DEFAULT NULL
+  `membership_status` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -173,7 +172,7 @@ INSERT INTO `user` (`uid`, `username`, `password`, `email`, `address`, `user_typ
 (1, 'julian', 'julian', 'julian@gmail.com', 'jalan julian', 0, 1),
 (2, 'azareel', 'ojan', 'ojan@gmail.com', 'jalan ojan', 1, 0),
 (3, 'lucky', 'lucky', 'lucky@gmail.com', 'jalan lucky', 2, 1),
-(5, 'ozan', 'lol', 'lol@gmail.com', 'lol', 2, NULL);
+(5, 'ozan', 'lol', 'lol@gmail.com', 'lol', 2, 0);
 
 --
 -- Indexes for dumped tables
