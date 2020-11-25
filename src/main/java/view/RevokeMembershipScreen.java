@@ -85,15 +85,17 @@ public class RevokeMembershipScreen implements ActionListener {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {  
                     String Data = null;
+                    String username = null;
                     int userId = 0;
                     int[] row = personTable.getSelectedRows();
 
                     for (int i = 0; i < row.length; i++) { 
                         Data = (String) personTable.getValueAt(row[i], 0);
+                        username = (String) personTable.getValueAt(row[i], 2);
                         userId = Integer.parseInt(Data);
                     }
                     
-                    Person person = persons.get(userId);
+                    Person person = Controller.getPerson(userId, username);
                     person.setMembership_status(false);
                     Controller.updatePerson(person);
                     JOptionPane.showMessageDialog(null,"Membership Revoked!","Notification",JOptionPane.INFORMATION_MESSAGE);
